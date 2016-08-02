@@ -29,7 +29,7 @@ public class Notifications {
                 .extend(new NotificationCompat.WearableExtender()
                         .setHintShowBackgroundOnly(true))
                 .setPriority(2)
-                .setVibrate(new long[] {500, 3000})
+                .setVibrate(new long[] {100})
                 .build();
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(app);
         int notificationId = 1;
