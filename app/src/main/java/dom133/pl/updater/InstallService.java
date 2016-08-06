@@ -27,7 +27,7 @@ public class InstallService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        pref = getSharedPreferences("Updater", Context.MODE_APPEND);
+        pref = getSharedPreferences("Updater", Context.MODE_PRIVATE);
     }
 
     @Override
