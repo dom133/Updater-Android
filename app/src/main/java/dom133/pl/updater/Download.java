@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class Download {
 
-    Application app;
+    private Application app;
 
     public Download(Application app){
         this.app = app;
