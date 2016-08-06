@@ -45,33 +45,33 @@ public class DownloadService extends Service {
         notifications = new Notifications(getApplication());
         res = getResources();
         download = new Download(getApplication());
-        sPref = getSharedPreferences("Updater", Context.MODE_APPEND);
         downloadFile = new DownloadFile();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
+        sPref = getSharedPreferences("Updater", Context.MODE_PRIVATE);
         Log.i("INFO", "Download service onCommand "+intent.getAction());
-        if(Objects.equals(intent.getAction(), "ACTION_STOP_SERVICE")) {Log.i("INFO", "Service is Stoped");stopSelf(); return START_NOT_STICKY;}
+        if(Objects.equals(intent.getAction(), "ACTION_STOP_SERVICE")) {Log.i("INFO", "Service is Stoped");stopSelf(); return START_STICKY;}
         else {
             notifications.sendNotificationDownload("Updater", "", 0, true);
             stopService(new Intent(this, VersionChecker.class));
-            //TODO: Zmienić to przed kompilacją
-            //new DownloadFile().execute("http://192.168.0.100/update.zip", res.getString(R.string.supersu_link));
             if (downloadFile.running) {
                 downloadFile.cancel(true);
             }
+
+            Log.i("INFO", "SuperSu: "+sPref.getBoolean("isSuperSU", false)+" Xposed: "+sPref.getBoolean("isXposed", false));
             if (sPref.getBoolean("isSuperSU", false)) {
                 if (sPref.getBoolean("isXposed", false)) {
-                    downloadFile.execute("http://192.168.0.100/update.zip", "update.zip", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip");
+                    downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip");
                 } else {
-                    downloadFile.execute("http://192.168.0.100/update.zip", "update.zip", res.getString(R.string.supersu_link), "supersu.zip");
+                    downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip");
                 }
             } else {
                 if (sPref.getBoolean("isXposed", false)) {
-                    downloadFile.execute("http://192.168.0.100/update.zip", "update.zip", res.getString(R.string.xposed_link), "xposed.zip");
+                    downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.xposed_link), "xposed.zip");
                 } else {
-                    downloadFile.execute("http://192.168.0.100/update.zip", "update.zip");
+                    downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip");
                 }
             }
             return START_STICKY;
@@ -86,6 +86,8 @@ public class DownloadService extends Service {
         if(file.exists()) {Log.i("INFO", "File deleted"); file.delete();}
         notifications.sendNotification("Updater", res.getString(R.string.cancle_message), 0);
         downloadFile.cancel(true);
+        sPref = null;
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     @Override

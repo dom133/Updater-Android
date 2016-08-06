@@ -25,7 +25,7 @@ public class Settings extends AppCompatActivity {
 
         if(actionBar!=null) {actionBar.setDisplayHomeAsUpEnabled(true);}
 
-        sPref = getSharedPreferences("Updater", Context.MODE_APPEND);
+        sPref = getSharedPreferences("Updater", Context.MODE_PRIVATE);
 
         Switch supersu = (Switch) findViewById(R.id.supersu);
         Switch xposed = (Switch) findViewById(R.id.xposed);
@@ -36,8 +36,8 @@ public class Settings extends AppCompatActivity {
         supersu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) {sPref.edit().putBoolean("isSuperSU", b).apply();}
-                else {sPref.edit().putBoolean("isSuperSU", b).apply();}
+                if(b) {sPref.edit().putBoolean("isSuperSU", b).commit();}
+                else {sPref.edit().putBoolean("isSuperSU", b).commit();}
                 Log.i("INFO", "SuperSU checked "+b);
             }
         });
@@ -45,8 +45,8 @@ public class Settings extends AppCompatActivity {
         xposed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) {sPref.edit().putBoolean("isXposed", b).apply();}
-                else {sPref.edit().putBoolean("isXposed", b).apply();}
+                if(b) {sPref.edit().putBoolean("isXposed", b).commit();}
+                else {sPref.edit().putBoolean("isXposed", b).commit();}
                 Log.i("INFO", "Xposed checked "+b);
             }
         });
