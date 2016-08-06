@@ -32,6 +32,7 @@ public class DownloadService extends Service {
     Download download;
     SharedPreferences sPref;
     DownloadFile downloadFile;
+    boolean isCancled = false;
 
     public DownloadService() {
     }
@@ -39,6 +40,7 @@ public class DownloadService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        isCancled = false;
         Log.i("INFO", "Download service onCreate");
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -52,7 +54,7 @@ public class DownloadService extends Service {
     public int onStartCommand(Intent intent, int flags, int startID){
         sPref = getSharedPreferences("Updater", Context.MODE_PRIVATE);
         Log.i("INFO", "Download service onCommand "+intent.getAction());
-        if(Objects.equals(intent.getAction(), "ACTION_STOP_SERVICE")) {Log.i("INFO", "Service is Stoped");stopSelf(); return START_STICKY;}
+        if(Objects.equals(intent.getAction(), "ACTION_STOP_SERVICE")) {Log.i("INFO", "Service is Stoped");stopSelf(); isCancled=true; return START_STICKY;}
         else {
             notifications.sendNotificationDownload("Updater", "", 0, true);
             stopService(new Intent(this, VersionChecker.class));
@@ -84,7 +86,7 @@ public class DownloadService extends Service {
         Log.i("INFO", "Download service stopped");
         File file = new File(Environment.getExternalStorageDirectory().getPath()+"/Update.txt");
         if(file.exists()) {Log.i("INFO", "File deleted"); file.delete();}
-        notifications.sendNotification("Updater", res.getString(R.string.cancle_message), 0);
+        if(isCancled)notifications.sendNotification("Updater", res.getString(R.string.cancle_message), 0);
         downloadFile.cancel(true);
         sPref = null;
         android.os.Process.killProcess(android.os.Process.myPid());
