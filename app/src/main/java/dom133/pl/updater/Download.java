@@ -6,6 +6,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -30,7 +32,8 @@ public class Download {
                     return inputLine;
                 in.close();
             } catch (java.io.IOException e) {
-                Log.i("INFO", e.getMessage());
+                FirebaseCrash.log(e.getStackTrace().toString());
+                Log.i("INFO", e.getStackTrace().toString());
                 return null;
             }
             return null;

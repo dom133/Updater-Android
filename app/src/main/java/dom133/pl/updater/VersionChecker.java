@@ -14,6 +14,8 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.io.File;
 import java.util.Objects;
 
@@ -59,21 +61,29 @@ public class VersionChecker extends Service {
                 File update = new File(Environment.getExternalStorageDirectory().getPath()+"/Install.txt");
                 if(update.exists()) {
                     update.delete();
+                    file.delete();
                     new File(Environment.getExternalStorageDirectory()+"/update.zip").delete();
                     new File(Environment.getExternalStorageDirectory().getPath()+"/supersu.zip").delete();
                     new File(Environment.getExternalStorageDirectory().getPath()+"/xposed.zip").delete();
+                    new File(Environment.getExternalStorageDirectory().getPath()+"/gapps.zip").delete();
                 }
+
                 try {
                     Log.i("INFO", "1");
                     Thread.sleep(60000);
                     if(!file.exists()) {
-                        if (!Objects.equals(Build.VERSION.INCREMENTAL, download.DownloadString(res.getString(R.string.version_url)))) {
+                        if (!Objects.equals(Build.VERSION.INCREMENTAL, download.DownloadString(res.getString(R.string.version_url))) && download.DownloadString(res.getString(R.string.version_url))!=null) {
                             notifications.sendNotification("Updater", res.getString(R.string.version_message), 0);
                             Log.i("INFO", "30");
+                            Thread.sleep(1800000);
+                        } else if(!Objects.equals(BuildConfig.VERSION_NAME, download.DownloadString(res.getString(R.string.app_version_link))) && download.DownloadString(res.getString(R.string.app_version_link))!=null) {
+                            notifications.sendNotification("Updater", res.getString(R.string.app_message), 2);
+                            Log.i("INFO", "App 30");
                             Thread.sleep(1800000);
                         }
                     } else {Log.i("INFO", "File exist");}
                 } catch(java.lang.InterruptedException e) {
+                    FirebaseCrash.log(e.getMessage());
                     Log.e("ERROR", e.getMessage());
                 }
             }

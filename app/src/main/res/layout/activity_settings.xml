@@ -17,14 +17,20 @@
         <Switch
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Jeśli posiadasz SuperSu zaznacz tą opcje"
+            android:text="@string/supersu_text"
             android:id="@+id/supersu" />
 
         <Switch
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Jeśli posiadasz Xposed zaznacz tę opcje"
+            android:text="@string/xposed_text"
             android:id="@+id/xposed" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gapps_text"
+            android:id="@+id/gapps" />
 
     </LinearLayout>
 

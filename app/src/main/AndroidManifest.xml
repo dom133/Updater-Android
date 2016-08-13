@@ -14,7 +14,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Main"
+        <activity
+            android:name=".Main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,6 +56,14 @@
             android:process=":Install_Service" />
 
         <activity android:name=".Settings" />
+        <activity android:name=".Report" />
+        <activity android:name=".InformationActivity" />
+
+        <service
+            android:name=".AppUpdateService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":App_Update_Service" />
     </application>
 
 </manifest>

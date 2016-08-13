@@ -1,6 +1,5 @@
 package dom133.pl.updater;
 
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +10,9 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.os.StrictMode;
 import android.util.Log;
+import android.widget.Button;
+
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -20,9 +22,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 public class DownloadService extends Service {
 
@@ -54,9 +53,9 @@ public class DownloadService extends Service {
     public int onStartCommand(Intent intent, int flags, int startID){
         sPref = getSharedPreferences("Updater", Context.MODE_PRIVATE);
         Log.i("INFO", "Download service onCommand "+intent.getAction());
-        if(Objects.equals(intent.getAction(), "ACTION_STOP_SERVICE")) {Log.i("INFO", "Service is Stoped");stopSelf(); isCancled=true; return START_STICKY;}
+        if(Objects.equals(intent.getAction(), "ACTION_STOP_SERVICE")) {Log.i("INFO", "Service is Stoped");stopSelf(); isCancled=true; downloadFile.cancel(true); return START_STICKY;}
         else {
-            notifications.sendNotificationDownload("Updater", "", 0, true);
+            notifications.sendNotificationDownload("Updater", "", 0, true, 0);
             stopService(new Intent(this, VersionChecker.class));
             if (downloadFile.running) {
                 downloadFile.cancel(true);
@@ -65,16 +64,14 @@ public class DownloadService extends Service {
             Log.i("INFO", "SuperSu: "+sPref.getBoolean("isSuperSU", false)+" Xposed: "+sPref.getBoolean("isXposed", false));
             if (sPref.getBoolean("isSuperSU", false)) {
                 if (sPref.getBoolean("isXposed", false)) {
-                    downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip");
-                } else {
-                    downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip");
-                }
+                    if(sPref.getBoolean("isGapps", false)) {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip", res.getString(R.string.gapps_link), "gapps.zip");}
+                    else {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip");}
+                } else {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip");}
             } else {
                 if (sPref.getBoolean("isXposed", false)) {
-                    downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.xposed_link), "xposed.zip");
-                } else {
-                    downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip");
-                }
+                    if(sPref.getBoolean("isGaaps", false)) {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.xposed_link), "xposed.zip", res.getString(R.string.gapps_link), "gapps.zip");}
+                    else {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.xposed_link), "xposed.zip");}
+                } else {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip");}
             }
             return START_STICKY;
         }
@@ -137,7 +134,7 @@ public class DownloadService extends Service {
                         }
                     }
 
-                    while (true && !isCancelled()) {
+                    while (!isCancelled()) {
                         File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + f_url[get[files - 1]]);
 
                         if (file.exists()) {
@@ -161,7 +158,7 @@ public class DownloadService extends Service {
                         byte data[] = new byte[54 * 1024];
                         long total = 0;
 
-                        notifications.sendNotificationDownload("Updater", "Pobrano: 0% 0Mb/" + lenghtoffile + "Mb", 0, false);
+                        notifications.sendNotificationDownload("Updater", "Pobrano: 0% 0Mb/" + (lenghtoffile/1048576) + "Mb", 0, false, 0);
 
                         while ((count = input.read(data)) != -1 && !isCancelled()) {
                             total += count;
@@ -185,8 +182,9 @@ public class DownloadService extends Service {
 
 
                 } catch (Exception e) {
+                    FirebaseCrash.log(e.getMessage());
                     Log.i("ERROR", e.getMessage());
-                    notifications.sendNotification("Updater", res.getString(R.string.download_incomplete), 0);
+                    if(!isCancled)notifications.sendNotification("Updater", res.getString(R.string.download_incomplete), 0);
                     startService(new Intent(getApplicationContext(), VersionChecker.class));
                     stopSelf();
                     return null;
@@ -198,8 +196,8 @@ public class DownloadService extends Service {
         @Override
         protected void onProgressUpdate(Integer... progres) {
             super.onProgressUpdate(progres);
-            if(progress!=progres[0]) {notifications.sendNotificationDownload("Updater", "Pobrano: "+progres[0]+"% "+progres[1]+"Mb/"+progres[2]+"Mb", progres[0], false);}
-            else if(downloaded!=progres[1]) {notifications.sendNotificationDownload("Updater", "Pobrano: "+progres[0]+"% "+progres[1]+"Mb/"+progres[2]+"Mb", progres[0], false);}
+            if(progress!=progres[0]) {notifications.sendNotificationDownload("Updater", "Pobrano: "+progres[0]+"% "+progres[1]+"Mb/"+progres[2]+"Mb", progres[0], false, 0);}
+            else if(downloaded!=progres[1]) {notifications.sendNotificationDownload("Updater", "Pobrano: "+progres[0]+"% "+progres[1]+"Mb/"+progres[2]+"Mb", progres[0], false, 0);}
             progress = progres[0];
             downloaded = progres[1];
         }

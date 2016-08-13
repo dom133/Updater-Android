@@ -16,6 +16,8 @@ import java.lang.Process;
 import android.preference.Preference;
 import android.util.Log;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.io.IOException;
 
 public class InstallService extends Service {
@@ -71,6 +73,7 @@ public class InstallService extends Service {
             su.waitFor();
             Log.i("INFO", readFully(response));
         } catch (Exception e) {
+            FirebaseCrash.log(e.getMessage());
             Log.e("ERROR", e.getMessage());
         }
         return START_NOT_STICKY;

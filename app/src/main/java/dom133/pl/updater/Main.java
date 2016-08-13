@@ -6,11 +6,11 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,17 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.util.Objects;
 
 public class Main extends AppCompatActivity {
 
-    private GoogleApiClient client;
     private Resources res;
+    private String update = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +49,8 @@ public class Main extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startService(new Intent(getApplicationContext(), DownloadService.class));
+                if(Objects.equals(update, "rom")) {startService(new Intent(getApplicationContext(), DownloadService.class));}
+                else {startService(new Intent(getApplicationContext(), AppUpdateService.class));}
                 Toast.makeText(getApplication(), "Pobieranie rozpoczęte!!!", Toast.LENGTH_SHORT).show();
                 button2.setEnabled(false);
             }
@@ -65,20 +61,26 @@ public class Main extends AppCompatActivity {
             public void onClick(View view) {
                 Log.i("INFO", "String: " + Build.VERSION.INCREMENTAL + " DownloadString: " + download.DownloadString(res.getString(R.string.version_url)));
                 if (Objects.equals(Build.VERSION.INCREMENTAL, download.DownloadString(res.getString(R.string.version_url)))) {
-                    Toast.makeText(getApplication(), "Nie znaleziono nowej wersji!!!", Toast.LENGTH_SHORT).show();
+                    if(!Objects.equals(BuildConfig.VERSION_NAME, download.DownloadString(res.getString(R.string.app_version_link)))) {
+                        Toast.makeText(getApplication(), res.getString(R.string.version_message_app), Toast.LENGTH_SHORT).show();
+                        button2.setVisibility(View.VISIBLE);
+                        button.setVisibility(View.GONE);
+                        update = "app";
+                    } else {
+                        Toast.makeText(getApplication(), "Nie znaleziono nowej wersji!!!", Toast.LENGTH_SHORT).show();
+                    }
                 } else if (download.DownloadString(res.getString(R.string.version_url)) == null) {
                     Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplication(), res.getString(R.string.version_message), Toast.LENGTH_SHORT).show();
                     button2.setVisibility(View.VISIBLE);
                     button.setVisibility(View.GONE);
+                    update = "rom";
                 }
             }
         });
 
         startService(new Intent(this, VersionChecker.class));
-
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -93,33 +95,13 @@ public class Main extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.action_settings) {
             startActivity(new Intent(this, Settings.class));
+        } else if(id == R.id.action_report) {
+            startActivity(new Intent(this, Report.class));
+        } else if(id == R.id.action_info) {
+            startActivity(new Intent(this, InformationActivity.class));
+        } else if(id == R.id.action_web) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://app-updater.pl")));
         }
         return true;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW,
-                "Main Page",
-                Uri.parse("http://host/path"),
-                Uri.parse("android-app://dom133.pl.updater/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW,
-                "Main Page",
-                Uri.parse("http://host/path"),
-                Uri.parse("android-app://dom133.pl.updater/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
     }
 }
