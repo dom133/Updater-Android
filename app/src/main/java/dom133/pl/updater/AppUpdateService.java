@@ -116,7 +116,6 @@ public class AppUpdateService extends Service {
                     return "OK";
 
                 } catch(Exception e) {
-                    FirebaseCrash.log(e.getMessage());
                     Log.e("ERROR", e.getMessage());
                     if(!isCancelled)notifications.sendNotification("Update", res.getString(R.string.download_incomplete), 2);
                     stopSelf();

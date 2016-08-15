@@ -57,6 +57,11 @@ public class InstallService extends Service {
                 outputStream.flush();
             }
 
+            if(pref.getBoolean("isGapps", false)) {
+                outputStream.writeBytes("echo '--update_package=/sdcard/gapps.zip' >> /cache/recovery/command\n");
+                outputStream.flush();
+            }
+
             if(pref.getBoolean("isXposed", false)) {
                 outputStream.writeBytes("echo '--update_package=/sdcard/xposed.zip' >> /cache/recovery/command\n");
                 outputStream.flush();
@@ -73,7 +78,6 @@ public class InstallService extends Service {
             su.waitFor();
             Log.i("INFO", readFully(response));
         } catch (Exception e) {
-            FirebaseCrash.log(e.getMessage());
             Log.e("ERROR", e.getMessage());
         }
         return START_NOT_STICKY;

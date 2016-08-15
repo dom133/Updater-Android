@@ -64,7 +64,6 @@ public class JSONParser {
             }
 
         } catch (Exception e) {
-            FirebaseCrash.log(e.getMessage());
             e.printStackTrace();
         }
 
@@ -79,7 +78,6 @@ public class JSONParser {
             is.close();
             json = sb.toString();
         } catch (Exception e) {
-            FirebaseCrash.log(e.getMessage());
             Log.e("Buffer Error", "Error converting result " + e.toString());
         }
 
@@ -87,7 +85,6 @@ public class JSONParser {
         try {
             jObj = new JSONObject(json);
         } catch (JSONException e) {
-            FirebaseCrash.log(e.getMessage());
             Log.e("JSON Parser", "Error parsing data " + e.toString());
         }
 

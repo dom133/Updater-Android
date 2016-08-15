@@ -15,7 +15,6 @@
     <string name="cancle_button">Anuluj</string>
     <string name="cancle_message">Pobieranie zostało zatrzymane!!!</string>
     <string name="action_report">Zgłoś błąd lub propozycję</string>
-    <string name="gapps_link" translatable="false">https://github.com/opengapps/arm/releases/download/20160813/open_gapps-arm-6.0-pico-20160813.zip</string>
     <string name="supersu_text">Jeśli posiadasz SuperSu zaznacz tą opcje</string>
     <string name="xposed_text">Jeśli posiadasz Xposed zaznacz tę opcje</string>
     <string name="gapps_text">Jeśli chcesz aktualizować Gapps zaznacz tą opcje</string>
@@ -28,4 +27,7 @@
     <string name="action_web">Otwórz stronę Web</string>
     <string name="app_version_link" translatable="false">https://raw.githubusercontent.com/dom133/Updater-Android-Wersje/master/app_version.txt</string>
     <string name="app_message">Dostępna jest nowa wersja aplikacji!!!</string>
+    <string name="gapps_link" translatable="false">https://www.dropbox.com/s/a8b2cgrr76item5/open_gapps-arm-6.0-pico-20160813.zip?dl=1</string>
+    <string name="time_actu_txt">Częstotliwośc sprawdzania aktualizacji:</string>
+    <string name="time_txt">Częstotliwość informowania o nowej wersji:</string>
 </resources>

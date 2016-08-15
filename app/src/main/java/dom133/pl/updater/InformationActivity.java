@@ -24,7 +24,6 @@ public class InformationActivity extends AppCompatActivity {
         try {
             version.setText(version_txt.replace("$1", "V"+BuildConfig.VERSION_NAME));
         } catch (Exception e) {
-            FirebaseCrash.log(e.getMessage());
             Log.e("ERROR", e.getMessage());
         }
     }

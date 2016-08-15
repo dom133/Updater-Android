@@ -32,8 +32,7 @@ public class Download {
                     return inputLine;
                 in.close();
             } catch (java.io.IOException e) {
-                FirebaseCrash.log(e.getStackTrace().toString());
-                Log.i("INFO", e.getStackTrace().toString());
+                Log.i("INFO", e.getMessage());
                 return null;
             }
             return null;
