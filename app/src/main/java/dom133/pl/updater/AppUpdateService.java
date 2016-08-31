@@ -50,7 +50,7 @@ public class AppUpdateService extends Service {
         if(file.exists()){Log.i("INFO", "File deleted"); file.delete();}
         if(isCancelled)notifications.sendNotification("Update", res.getString(R.string.cancle_message) , 2);
         startService(new Intent(getApplicationContext(), VersionChecker.class));
-        android.os.Process.killProcess(android.os.Process.myPid());
+        //android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     @Override
@@ -88,7 +88,8 @@ public class AppUpdateService extends Service {
             while(!isCancelled()) {
                 running = true;
                 try {
-                    File file = new File(Environment.getExternalStorageDirectory()+"/"+Environment.DIRECTORY_DOWNLOADS+"/update.apk");
+                    //File file = new File(Environment.getExternalStorageDirectory()+"/"+Environment.DIRECTORY_DOWNLOADS+"/update.apk");
+                    File file = new File("/mnt/media_rw/1FCA-5840/update.apk");
                     if(file.exists()) {Log.i("INFO", "File deleted"); file.delete();}
 
                     URL url = new URL(strings[0]);

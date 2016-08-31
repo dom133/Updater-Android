@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Updater</string>
-    <string name="version_url" translatable="false">https://raw.githubusercontent.com/dom133/Updater-Android-Wersje/master/version.txt</string>
+    <string name="version_url" translatable="false">http://app-updater.pl/updates/txt/version_debug.txt</string>
     <string name="sprawdz_aktualizacje">Sprawdz Aktualizacje</string>
     <string name="version_message">Dostępna jest nowa wersja romu!!!</string>
     <string name="version_message_app">Dostępna jest nowa wersja aplikacji!!!</string>
-    <string name="download_url" translatable="false">https://raw.githubusercontent.com/dom133/Updater-Android-Wersje/master/download_link.txt</string>
+    <string name="download_url" translatable="false">http://app-updater.pl/updates/txt/download_link.txt</string>
     <string name="download_complete">Pobieranie zostało ukończone!!!</string>
     <string name="download_incomplete">Pobieranie nie zostało ukończone!!!</string>
     <string name="install_button">Zainstaluj</string>
@@ -25,9 +25,9 @@
     <string name="action_info">Informacje o aplikcaji</string>
     <string name="version_text">Wersja aplikacji: $1</string>
     <string name="action_web">Otwórz stronę Web</string>
-    <string name="app_version_link" translatable="false">https://raw.githubusercontent.com/dom133/Updater-Android-Wersje/master/app_version.txt</string>
+    <string name="app_version_link" translatable="false">http://app-updater.pl/updates/txt/app_version.txt</string>
     <string name="app_message">Dostępna jest nowa wersja aplikacji!!!</string>
-    <string name="gapps_link" translatable="false">https://www.dropbox.com/s/a8b2cgrr76item5/open_gapps-arm-6.0-pico-20160813.zip?dl=1</string>
     <string name="time_actu_txt">Częstotliwośc sprawdzania aktualizacji:</string>
     <string name="time_txt">Częstotliwość informowania o nowej wersji:</string>
+    <string name="gapps_link" translatable="false">https://www.dropbox.com/s/ud46y0kjmrsr613/gapps.zip?dl=1</string>
 </resources>

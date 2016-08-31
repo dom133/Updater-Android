@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "748939397323",
+    "firebase_url": "https://updater-29cab.firebaseio.com",
+    "project_id": "updater-29cab",
+    "storage_bucket": "updater-29cab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748939397323:android:6f5459f346b55d1f",
+        "android_client_info": {
+          "package_name": "dom133.pl.updater"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "748939397323-2l4b1n2nmucvg528pc2576j0ikpo5kv6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClc2CAo166Ns5g-6UYFBBN7WHjCGvfSWQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

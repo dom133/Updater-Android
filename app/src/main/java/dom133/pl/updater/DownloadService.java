@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 
 public class DownloadService extends Service {
@@ -139,7 +141,9 @@ public class DownloadService extends Service {
 
                     while (!isCancelled()) {
                         notifications.sendNotificationDownload("Updater", "", 0, true, 0);
-                        File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + f_url[get[files - 1]]);
+                        File file = null;
+                        if(sPref.getInt("Memory", 0)==0) {file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + f_url[get[files - 1]]);}
+                        else {file = new File("/storage/1FCA-5840/" + f_url[get[files - 1]]);}
 
                         if (file.exists()) {
                             Log.i("INFO", "File deleted");
@@ -217,6 +221,52 @@ public class DownloadService extends Service {
         protected void onCancelled() {
             running = false;
             Log.i("INFO", "AsyncTask canclled");
+        }
+
+        public HashSet<String> getExternalMounts()
+        {
+
+            final HashSet<String> out = new HashSet<String>();
+            String reg = "(?i).*vold.*(vfat|ntfs|exfat|fat32|ext3|ext4).*rw.*";
+            String s = "";
+            try
+            {
+                final Process process = new ProcessBuilder().command("mount").redirectErrorStream(true).start();
+                process.waitFor();
+                final InputStream is = process.getInputStream();
+                final byte[] buffer = new byte[1024];
+                while(is.read(buffer) != -1)
+                {
+                    s = s + new String(buffer);
+                }
+                is.close();
+            }
+            catch(Exception e)
+            {
+                Log.e("ERROR",e.getMessage());
+            }
+            final String[] lines = s.split("\n");
+            for (String line : lines)
+            {
+                if(!line.toLowerCase(Locale.US).contains("asec"))
+                {
+                    if(line.matches(reg))
+                    {
+                        String[] parts = line.split(" ");
+                        for(String part : parts)
+                        {
+                            if(part.startsWith("/"))
+                            {
+                                if(!part.toLowerCase(Locale.US).contains("vold"))
+                                {
+                                    out.add(part);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return out;
         }
     }
 }
