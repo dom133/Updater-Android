@@ -88,8 +88,8 @@ public class AppUpdateService extends Service {
             while(!isCancelled()) {
                 running = true;
                 try {
-                    //File file = new File(Environment.getExternalStorageDirectory()+"/"+Environment.DIRECTORY_DOWNLOADS+"/update.apk");
-                    File file = new File("/mnt/media_rw/1FCA-5840/update.apk");
+                    File file = new File(Environment.getExternalStorageDirectory()+"/"+Environment.DIRECTORY_DOWNLOADS+"/update.apk");
+                    //File file = new File("/mnt/media_rw/1FCA-5840/update.apk");
                     if(file.exists()) {Log.i("INFO", "File deleted"); file.delete();}
 
                     URL url = new URL(strings[0]);

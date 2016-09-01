@@ -143,7 +143,7 @@ public class DownloadService extends Service {
                         notifications.sendNotificationDownload("Updater", "", 0, true, 0);
                         File file = null;
                         if(sPref.getInt("Memory", 0)==0) {file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + f_url[get[files - 1]]);}
-                        else {file = new File("/storage/1FCA-5840/" + f_url[get[files - 1]]);}
+                        else {file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + f_url[get[files - 1]]);}
 
                         if (file.exists()) {
                             Log.i("INFO", "File deleted");
