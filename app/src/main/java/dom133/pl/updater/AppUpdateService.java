@@ -50,7 +50,7 @@ public class AppUpdateService extends Service {
         if(file.exists()){Log.i("INFO", "File deleted"); file.delete();}
         if(isCancelled)notifications.sendNotification("Update", res.getString(R.string.cancle_message) , 2);
         startService(new Intent(getApplicationContext(), VersionChecker.class));
-        //android.os.Process.killProcess(android.os.Process.myPid());
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     @Override

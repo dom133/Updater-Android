@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.StrictMode;
@@ -72,7 +71,7 @@ public class VersionChecker extends Service {
 
                 try {
                     if(!file.exists()) {
-                        if (!Objects.equals(Build.VERSION.INCREMENTAL, download.DownloadString(res.getString(R.string.version_url))) && download.DownloadString(res.getString(R.string.version_url))!=null) {
+                        if (!Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url))) && download.DownloadString(res.getString(R.string.version_url))!=null) {
                             notifications.sendNotification("Updater", res.getString(R.string.version_message), 0);
                             Log.i("INFO", "ROM "+String.valueOf(sPref.getInt("Actu", (1000*60)*30)));
                             Thread.sleep(sPref.getInt("Actu", (1000*60)*30));
@@ -80,10 +79,11 @@ public class VersionChecker extends Service {
                             notifications.sendNotification("Updater", res.getString(R.string.app_message), 2);
                             Log.i("INFO", "App "+String.valueOf(sPref.getInt("Actu", (1000*60)*30)));
                             Thread.sleep(sPref.getInt("Actu", (1000*60)*30));
+                        } else {
+                            Log.i("INFO", "Sleep: "+String.valueOf(sPref.getInt("Time", (1000*60))));
+                            Thread.sleep(sPref.getInt("Time", (1000*60)));
                         }
                     } else {Log.i("INFO", "File exist");}
-                    Log.i("INFO", "Sleep: "+String.valueOf(sPref.getInt("Time", (1000*60))));
-                    Thread.sleep(sPref.getInt("Time", (1000*60)));
                 } catch(java.lang.InterruptedException e) {
                     Log.e("ERROR", e.getMessage());
                 }

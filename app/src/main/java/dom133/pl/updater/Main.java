@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
@@ -66,9 +65,9 @@ public class Main extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("INFO", "String: " + Build.VERSION.INCREMENTAL + " DownloadString: " + download.DownloadString(res.getString(R.string.version_url)));
-                if (Objects.equals(Build.VERSION.INCREMENTAL, download.DownloadString(res.getString(R.string.version_url)))) {
-                    if(!Objects.equals(BuildConfig.VERSION_NAME, download.DownloadString(res.getString(R.string.app_version_link))) && download.DownloadString(res.getString(R.string.app_version_link))!=null) {
+                Log.i("INFO", "String: " + download.getProp("ro.cm.version") + " DownloadString: " + download.DownloadString(res.getString(R.string.version_url)));
+                if (Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url)))) {
+                    if(!Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.app_version_link))) && download.DownloadString(res.getString(R.string.app_version_link))!=null) {
                         Toast.makeText(getApplication(), res.getString(R.string.version_message_app), Toast.LENGTH_SHORT).show();
                         button2.setVisibility(View.VISIBLE);
                         button.setVisibility(View.GONE);

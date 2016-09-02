@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Updater</string>
-    <string name="version_url" translatable="false">http://app-updater.pl/updates/txt/version_debug.txt</string>
+    <string name="version_url" translatable="false">http://app-updater.pl/updates/txt/version.txt</string>
     <string name="sprawdz_aktualizacje">Sprawdz Aktualizacje</string>
     <string name="version_message">Dostępna jest nowa wersja romu!!!</string>
     <string name="version_message_app">Dostępna jest nowa wersja aplikacji!!!</string>
@@ -8,7 +8,7 @@
     <string name="download_complete">Pobieranie zostało ukończone!!!</string>
     <string name="download_incomplete">Pobieranie nie zostało ukończone!!!</string>
     <string name="install_button">Zainstaluj</string>
-    <string name="supersu_link" translatable="false">https://download.chainfire.eu/969/SuperSU/UPDATE-SuperSU-v2.76-20160630161323.zip?retrieve_file=1</string>
+    <string name="supersu_link" translatable="false">https://download.chainfire.eu/999/SuperSU/BETA-SuperSU-v2.77-20160827190633.zip?retrieve_file=1</string>
     <string name="xposed_link" translatable="false">http://dl-xda.xposed.info/framework/sdk23/arm/xposed-v86-sdk23-arm.zip</string>
     <string name="action_settings">Ustawienia</string>
     <string name="download_button">Pobierz</string>
