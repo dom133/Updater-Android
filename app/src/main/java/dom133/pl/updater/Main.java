@@ -65,9 +65,9 @@ public class Main extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("INFO", "String: " + download.getProp("ro.cm.version") + " DownloadString: " + download.DownloadString(res.getString(R.string.version_url)));
+                Log.i("INFO", "String: " + download.getProp("ro.cm.version") + " DownloadString: " + download.DownloadString(res.getString(R.string.version_url))+" True: "+Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url))));
                 if (Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url)))) {
-                    if(!Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.app_version_link))) && download.DownloadString(res.getString(R.string.app_version_link))!=null) {
+                    if(!Objects.equals(BuildConfig.VERSION_NAME, download.DownloadString(res.getString(R.string.app_version_link))) && download.DownloadString(res.getString(R.string.app_version_link))!=null) {
                         Toast.makeText(getApplication(), res.getString(R.string.version_message_app), Toast.LENGTH_SHORT).show();
                         button2.setVisibility(View.VISIBLE);
                         button.setVisibility(View.GONE);

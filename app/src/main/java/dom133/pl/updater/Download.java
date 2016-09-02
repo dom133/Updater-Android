@@ -28,15 +28,20 @@ public class Download {
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(url2.openStream()));
 
-                String inputLine;
-                while ((inputLine = in.readLine()) != null)
+                String inputLine="";
+                String inputLine2="";
+                while ((inputLine = in.readLine()) != null){
+                    while ((inputLine2 = in.readLine()) != null){
+                        return inputLine+inputLine2;
+                    }
                     return inputLine;
+				}
                 in.close();
-            } catch (java.io.IOException e) {
+            } catch (Exception e) {
                 Log.i("INFO", e.getMessage());
                 return null;
             }
-            return null;
+        return null;
     }
 
     public String getProp(String name) {
@@ -54,7 +59,9 @@ public class Download {
             reader.close();
             process.waitFor();
 
-            return output.toString();
+            String out = output.toString();
+            out = out.replaceAll("\\s+","");
+            return out;
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
