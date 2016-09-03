@@ -24,6 +24,7 @@ public class VersionChecker extends Service {
     Notifications notifications;
     Resources res;
     SharedPreferences sPref;
+    private NotificationTask nTask;
 
     @Override
     public void onCreate() {
@@ -35,19 +36,26 @@ public class VersionChecker extends Service {
         StrictMode.setThreadPolicy(policy);
         res = getResources();
         sPref = getSharedPreferences("Updater", Context.MODE_PRIVATE);
+        nTask = new NotificationTask();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.i("INFO", "Service onDestroy");
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("INFO", "Service onCommand");
-        new NotificationTask().execute("");
-        return Service.START_STICKY;
+        if(intent.getAction()!=null && Objects.equals(intent.getAction(), "ACTION_STOP")) {stopSelf(); nTask.cancel(true); return Service.START_NOT_STICKY;}
+        else {
+            try {
+                nTask.execute("");
+            } catch(Exception e) {Log.e("ERROR", e.getMessage());}
+            return Service.START_STICKY;
+        }
     }
 
     @Override
@@ -56,8 +64,11 @@ public class VersionChecker extends Service {
     }
 
     private class NotificationTask extends AsyncTask<String, Void, String> {
+
+        public  boolean running = true;
+
         protected String doInBackground(String... params) {
-            while(true) {
+            while(!isCancelled()) {
                 File file = new File(Environment.getExternalStorageDirectory().getPath()+"/Update.txt");
                 File update = new File(Environment.getExternalStorageDirectory().getPath()+"/Install.txt");
                 if(update.exists()) {
@@ -88,8 +99,14 @@ public class VersionChecker extends Service {
                     Log.e("ERROR", e.getMessage());
                 }
             }
+            return null;
         }
 
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            running=false;
+        }
     }
 
 }

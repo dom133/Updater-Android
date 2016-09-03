@@ -58,7 +58,9 @@ public class DownloadService extends Service {
         if(Objects.equals(intent.getAction(), "ACTION_STOP_SERVICE")) {Log.i("INFO", "Service is Stoped");stopSelf(); isCancled=true; downloadFile.cancel(true); return START_STICKY;}
         else {
             notifications.sendNotificationDownload("Updater", "", 0, true, 0);
-            stopService(new Intent(this, VersionChecker.class));
+            Intent intent_vers = new Intent(this, VersionChecker.class);
+            intent_vers.setAction("ACTION_STOP");
+            startService(intent_vers);
             if (downloadFile.running) {
                 downloadFile.cancel(true);
             }
