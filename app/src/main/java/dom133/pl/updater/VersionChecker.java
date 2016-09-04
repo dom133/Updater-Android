@@ -49,7 +49,7 @@ public class VersionChecker extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("INFO", "Service onCommand");
-        if(intent.getAction()!=null && Objects.equals(intent.getAction(), "ACTION_STOP")) {stopSelf(); nTask.cancel(true); return Service.START_NOT_STICKY;}
+        if(intent!=null && Objects.equals(intent.getAction(), "ACTION_STOP")) {stopSelf(); nTask.cancel(true); return Service.START_NOT_STICKY;}
         else {
             try {
                 nTask.execute("");
