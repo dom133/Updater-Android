@@ -11,9 +11,6 @@ import android.os.IBinder;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Button;
-
-import com.google.firebase.crash.FirebaseCrash;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,33 +51,48 @@ public class DownloadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
         sPref = getSharedPreferences("Updater", Context.MODE_PRIVATE);
-        Log.i("INFO", "Download service onCommand "+intent.getAction());
-        if(Objects.equals(intent.getAction(), "ACTION_STOP_SERVICE")) {Log.i("INFO", "Service is Stoped");stopSelf(); isCancled=true; downloadFile.cancel(true); return START_STICKY;}
+        Log.i("INFO", "Download service onCommand");
+        if(intent!=null && Objects.equals(intent.getAction(), "ACTION_STOP_SERVICE")) {Log.i("INFO", "Service is Stoped");stopSelf(); isCancled=true; downloadFile.cancel(true); return START_STICKY;}
         else {
-            notifications.sendNotificationDownload("Updater", "", 0, true, 0);
-            Intent intent_vers = new Intent(this, VersionChecker.class);
-            intent_vers.setAction("ACTION_STOP");
-            startService(intent_vers);
-            if (downloadFile.running) {
-                downloadFile.cancel(true);
-            }
+            try {
+                notifications.sendNotificationDownload("Updater", "", 0, true, 0);
+                Intent intent_vers = new Intent(this, VersionChecker.class);
+                intent_vers.setAction("ACTION_STOP");
+                startService(intent_vers);
+                new File(Environment.getExternalStorageDirectory().getPath() + "/Update.txt").createNewFile();
 
-            Log.i("INFO", "SuperSu: "+sPref.getBoolean("isSuperSU", false)+" Xposed: "+sPref.getBoolean("isXposed", false) + " Gapps: "+sPref.getBoolean("isGapps", false));
-            if (sPref.getBoolean("isSuperSU", false)) {
-                if (sPref.getBoolean("isXposed", false)) {
-                    if(sPref.getBoolean("isGapps", false)) {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip", res.getString(R.string.gapps_link), "gapps.zip");}
-                    else {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip");}
-                } else {
-                    if(sPref.getBoolean("isGapps", false)) {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.gapps_link), "gapps.zip");}
-                    else {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip");}
+                if (downloadFile.running) {
+                    downloadFile.cancel(true);
                 }
-            } else {
-                if (sPref.getBoolean("isXposed", false)) {
-                    if(sPref.getBoolean("isGaaps", false)) {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.xposed_link), "xposed.zip", res.getString(R.string.gapps_link), "gapps.zip");}
-                    else {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.xposed_link), "xposed.zip");}
-                } else {downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip");}
-            }
-            return START_STICKY;
+
+                Log.i("INFO", "SuperSu: " + sPref.getBoolean("isSuperSU", false) + " Xposed: " + sPref.getBoolean("isXposed", false) + " Gapps: " + sPref.getBoolean("isGapps", false));
+                if (sPref.getBoolean("isSuperSU", false)) {
+                    if (sPref.getBoolean("isXposed", false)) {
+                        if (sPref.getBoolean("isGapps", false)) {
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip", res.getString(R.string.gapps_link), "gapps.zip");
+                        } else {
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip");
+                        }
+                    } else {
+                        if (sPref.getBoolean("isGapps", false)) {
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.gapps_link), "gapps.zip");
+                        } else {
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.supersu_link), "supersu.zip");
+                        }
+                    }
+                } else {
+                    if (sPref.getBoolean("isXposed", false)) {
+                        if (sPref.getBoolean("isGaaps", false)) {
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.xposed_link), "xposed.zip", res.getString(R.string.gapps_link), "gapps.zip");
+                        } else {
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", res.getString(R.string.xposed_link), "xposed.zip");
+                        }
+                    } else {
+                        downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip");
+                    }
+                }
+                return START_STICKY;
+            } catch(Exception e) {Log.e("ERROR", e.getMessage());return START_STICKY;}
         }
     }
 
@@ -152,8 +164,6 @@ public class DownloadService extends Service {
                             file.delete();
                         }
 
-                        File create = new File(Environment.getExternalStorageDirectory().getPath() + "/Update.txt");
-                        create.createNewFile();
                         Log.i("INFO", "File: " + file.getPath());
 
                         URL url = new URL(f_url[url_i[files - 1]]);

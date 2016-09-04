@@ -12,9 +12,6 @@ import android.os.IBinder;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.google.firebase.crash.FirebaseCrash;
-
 import java.io.File;
 import java.util.Objects;
 

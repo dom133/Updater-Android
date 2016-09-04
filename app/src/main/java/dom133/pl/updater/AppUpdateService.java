@@ -8,12 +8,9 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.google.firebase.crash.FirebaseCrash;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -56,17 +53,24 @@ public class AppUpdateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("INFO", "Service app onCommand");
-        Log.i("INFO", "Intent action: "+intent.getAction());
-        if(Objects.equals(intent.getAction(), "ACTION_STOP_SERVICE")) {
+        //Log.i("INFO", "Intent action: "+intent.getAction());
+        if(intent!=null && Objects.equals(intent.getAction(), "ACTION_STOP_SERVICE")) {
             stopSelf();
             downloadFile.cancel(true);
             isCancelled= true;
             return START_STICKY;
         } else {
-            stopService(new Intent(getApplicationContext(), VersionChecker.class));
-            if(downloadFile.running) {downloadFile.cancel(true);}
-            notifications.sendNotificationDownload("Updater", "", 0, false, 1);
-            downloadFile.execute("http://app-updater.pl/updates/update.apk");
+            try {
+                Intent intent_vers = new Intent(this, VersionChecker.class);
+                intent_vers.setAction("ACTION_STOP");
+                startService(intent_vers);
+                new File(Environment.getExternalStorageDirectory().getPath() + "/Update.txt").createNewFile();
+                if (downloadFile.running) {
+                    downloadFile.cancel(true);
+                }
+                notifications.sendNotificationDownload("Updater", "", 0, false, 1);
+                downloadFile.execute("http://app-updater.pl/updates/update.apk");
+            } catch(Exception e) {Log.e("ERROR", e.getMessage());}
             return START_STICKY;
         }
     }
