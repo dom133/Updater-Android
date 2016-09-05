@@ -28,8 +28,8 @@ public class Download {
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(url2.openStream()));
 
-                String inputLine="";
-                String inputLine2="";
+                String inputLine;
+                String inputLine2;
                 while ((inputLine = in.readLine()) != null){
                     while ((inputLine2 = in.readLine()) != null){
                         return inputLine+inputLine2;

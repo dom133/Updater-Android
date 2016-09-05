@@ -55,8 +55,7 @@ public class Main extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Objects.equals(update, "rom")) {startService(new Intent(getApplicationContext(), DownloadService.class));}
-                else {startService(new Intent(getApplicationContext(), AppUpdateService.class));}
+                startService(new Intent(getApplicationContext(), DownloadService.class));
                 Toast.makeText(getApplication(), "Pobieranie rozpoczęte!!!", Toast.LENGTH_SHORT).show();
                 button2.setEnabled(false);
             }
@@ -67,21 +66,13 @@ public class Main extends AppCompatActivity {
             public void onClick(View view) {
                 Log.i("INFO", "String: " + download.getProp("ro.cm.version") + " DownloadString: " + download.DownloadString(res.getString(R.string.version_url))+" True: "+Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url))));
                 if (Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url)))) {
-                    if(!Objects.equals(BuildConfig.VERSION_NAME, download.DownloadString(res.getString(R.string.app_version_link))) && download.DownloadString(res.getString(R.string.app_version_link))!=null) {
-                        Toast.makeText(getApplication(), res.getString(R.string.version_message_app), Toast.LENGTH_SHORT).show();
-                        button2.setVisibility(View.VISIBLE);
-                        button.setVisibility(View.GONE);
-                        update = "app";
-                    } else {
-                        Toast.makeText(getApplication(), "Nie znaleziono nowej wersji!!!", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(getApplication(), "Nie znaleziono nowej wersji!!!", Toast.LENGTH_SHORT).show();
                 } else if (download.DownloadString(res.getString(R.string.version_url)) == null) {
                     Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplication(), res.getString(R.string.version_message), Toast.LENGTH_SHORT).show();
                     button2.setVisibility(View.VISIBLE);
                     button.setVisibility(View.GONE);
-                    update = "rom";
                 }
             }
         });

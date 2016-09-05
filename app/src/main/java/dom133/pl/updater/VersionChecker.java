@@ -79,14 +79,14 @@ public class VersionChecker extends Service {
 
                 try {
                     if(!file.exists()) {
-                        if (!Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url))) && download.DownloadString(res.getString(R.string.version_url))!=null) {
+                        if (!download.DownloadString(res.getString(R.string.version_url)).equals(download.getProp("ro.cm.version")) && download.DownloadString(res.getString(R.string.version_url))!=null) {
                             notifications.sendNotification("Updater", res.getString(R.string.version_message), 0);
                             Log.i("INFO", "ROM "+String.valueOf(sPref.getInt("Actu", (1000*60)*30)));
                             Thread.sleep(sPref.getInt("Actu", (1000*60)*30));
-                        } else if(!Objects.equals(BuildConfig.VERSION_NAME, download.DownloadString(res.getString(R.string.app_version_link))) && download.DownloadString(res.getString(R.string.app_version_link))!=null) {
+                        /*} else if(!Objects.equals(BuildConfig.VERSION_NAME, download.DownloadString(res.getString(R.string.app_version_link))) && download.DownloadString(res.getString(R.string.app_version_link))!=null) {
                             notifications.sendNotification("Updater", res.getString(R.string.app_message), 2);
                             Log.i("INFO", "App "+String.valueOf(sPref.getInt("Actu", (1000*60)*30)));
-                            Thread.sleep(sPref.getInt("Actu", (1000*60)*30));
+                            Thread.sleep(sPref.getInt("Actu", (1000*60)*30));*/
                         } else {
                             Log.i("INFO", "Sleep: "+String.valueOf(sPref.getInt("Time", (1000*60))));
                             Thread.sleep(sPref.getInt("Time", (1000*60)));

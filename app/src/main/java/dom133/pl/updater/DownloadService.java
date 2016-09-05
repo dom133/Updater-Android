@@ -225,7 +225,7 @@ public class DownloadService extends Service {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if(s!=null)notifications.sendNotification("Updater", res.getString(R.string.download_complete), 1);
-            startService(new Intent(getApplicationContext(), VersionChecker.class));
+            //startService(new Intent(getApplicationContext(), VersionChecker.class));
             stopSelf();
         }
 

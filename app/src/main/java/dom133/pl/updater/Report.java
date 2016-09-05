@@ -80,7 +80,9 @@ public class Report extends AppCompatActivity {
                 }
 
                 if(!error) {
-                    Toast.makeText(getApplicationContext(), mysql.add(String.valueOf(selected), nick.getText().toString(), email.getText().toString(), title.getText().toString(), contents.getText().toString()), Toast.LENGTH_LONG).show();
+                    String text = mysql.add(String.valueOf(selected), nick.getText().toString(), email.getText().toString(), title.getText().toString(), contents.getText().toString());
+                    if(text.equals("Poprawnie przyjeto zgloszenie!!!")) {nick.setText(""); email.setText(""); title.setText(""); contents.setText("");}
+                    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
                 }
             }
         });

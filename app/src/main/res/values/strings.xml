@@ -25,7 +25,6 @@
     <string name="action_info">Informacje o aplikcaji</string>
     <string name="version_text">Wersja aplikacji: $1</string>
     <string name="action_web">Otwórz stronę Web</string>
-    <string name="app_version_link" translatable="false">http://app-updater.pl/updates/txt/app_version.txt</string>
     <string name="app_message">Dostępna jest nowa wersja aplikacji!!!</string>
     <string name="time_actu_txt">Częstotliwośc sprawdzania aktualizacji:</string>
     <string name="time_txt">Częstotliwość informowania o nowej wersji:</string>
