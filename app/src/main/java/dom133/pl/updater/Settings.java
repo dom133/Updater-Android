@@ -49,10 +49,12 @@ public class Settings extends AppCompatActivity {
         Spinner memory = (Spinner) findViewById(R.id.spinner_memory);
 
         ArrayAdapter<CharSequence> time_adapter = ArrayAdapter.createFromResource(this, R.array.time_array, android.R.layout.simple_spinner_item);
+        time_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         time.setAdapter(time_adapter);
         actu.setAdapter(time_adapter);
 
         ArrayAdapter<CharSequence> memory_adapter = ArrayAdapter.createFromResource(this, R.array.memory_array, android.R.layout.simple_spinner_item);
+        memory_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         memory.setAdapter(memory_adapter);
 
         supersu.setChecked(sPref.getBoolean("isSuperSU", false));
