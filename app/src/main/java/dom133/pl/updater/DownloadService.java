@@ -125,16 +125,11 @@ public class DownloadService extends Service {
                 int count;
                 int files = 1;
                 int number = f_url.length;
-                int[] get = new int[3];
-                int[] url_i = new int[3];
+                int[] get = new int[10];
+                int[] url_i = new int[10];
                 Log.i("INFO", "Numbers: " + number);
                 try {
                     switch (number) {
-                        case 2: {
-                            url_i[0] = 0;
-                            get[0] = 1;
-                            break;
-                        }
                         case 4: {
                             url_i[0] = 0;
                             url_i[1] = 2;
@@ -160,6 +155,19 @@ public class DownloadService extends Service {
                             get[1] = 3;
                             get[2] = 5;
                             get[3] = 7;
+                            break;
+                        }
+                        case 10: {
+                            url_i[0] = 0;
+                            url_i[1] = 2;
+                            url_i[2] = 4;
+                            url_i[3] = 6;
+                            url_i[4] = 8;
+                            get[0] = 1;
+                            get[1] = 3;
+                            get[2] = 5;
+                            get[3] = 7;
+                            get[4] = 9;
                             break;
                         }
                     }
