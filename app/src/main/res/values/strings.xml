@@ -8,7 +8,7 @@
     <string name="download_complete">Pobieranie zostało ukończone!!!</string>
     <string name="download_incomplete">Pobieranie nie zostało ukończone!!!</string>
     <string name="install_button">Zainstaluj</string>
-    <string name="supersu_link" translatable="false">https://download.chainfire.eu/999/SuperSU/BETA-SuperSU-v2.77-20160827190633.zip?retrieve_file=1</string>
+    <string name="supersu_link" translatable="false">http://app-updater.pl/updates/txt/supersu.txt</string>
     <string name="xposed_link" translatable="false">http://dl-xda.xposed.info/framework/sdk23/arm/xposed-v86-sdk23-arm.zip</string>
     <string name="action_settings">Ustawienia</string>
     <string name="download_button">Pobierz</string>

@@ -71,6 +71,7 @@ public class VersionChecker extends Service {
                 if(update.exists()) {
                     update.delete();
                     file.delete();
+                    sPref.edit().putBoolean("isUpdate", false).commit();
                     new File(Environment.getExternalStorageDirectory()+"/update.zip").delete();
                     new File(Environment.getExternalStorageDirectory()+"/update.zip.md5").delete();
                     new File(Environment.getExternalStorageDirectory().getPath()+"/supersu.zip").delete();
@@ -79,7 +80,7 @@ public class VersionChecker extends Service {
                 }
 
                 try {
-                    if(!file.exists()) {
+                    if(!sPref.getBoolean("isUpdate", false)) {
                         if (!download.DownloadString(res.getString(R.string.version_url)).equals(download.getProp("ro.cm.version")) && download.DownloadString(res.getString(R.string.version_url))!=null) {
                             notifications.sendNotification("Updater", res.getString(R.string.version_message), 0);
                             Log.i("INFO", "ROM "+String.valueOf(sPref.getInt("Actu", (1000*60)*30)));

@@ -69,15 +69,15 @@ public class DownloadService extends Service {
                 if (sPref.getBoolean("isSuperSU", false)) {
                     if (sPref.getBoolean("isXposed", false)) {
                         if (sPref.getBoolean("isGapps", false)) {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip", res.getString(R.string.gapps_link), "gapps.zip");
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip", res.getString(R.string.gapps_link), "gapps.zip");
                         } else {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip");
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip");
                         }
                     } else {
                         if (sPref.getBoolean("isGapps", false)) {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", res.getString(R.string.supersu_link), "supersu.zip", res.getString(R.string.gapps_link), "gapps.zip");
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip", res.getString(R.string.gapps_link), "gapps.zip");
                         } else {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", res.getString(R.string.supersu_link), "supersu.zip");
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip");
                         }
                     }
                 } else {
@@ -103,6 +103,7 @@ public class DownloadService extends Service {
         File file = new File(Environment.getExternalStorageDirectory().getPath()+"/Update.txt");
         if(file.exists()) {Log.i("INFO", "File deleted"); file.delete();}
         if(isCancled)notifications.sendNotification("Updater", res.getString(R.string.cancle_message), 0);
+        sPref.edit().putBoolean("isUpdate", false).commit();
         downloadFile.cancel(true);
         sPref = null;
         android.os.Process.killProcess(android.os.Process.myPid());
@@ -120,6 +121,7 @@ public class DownloadService extends Service {
 
         @Override
         protected String doInBackground(String... f_url) {
+            sPref.edit().putBoolean("isUpdate", true).commit();
             while(!isCancelled()) {
                 running=true;
                 int count;
