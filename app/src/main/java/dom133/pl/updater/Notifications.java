@@ -59,22 +59,6 @@ public class Notifications {
                     .addAction(R.drawable.ic_install, res.getString(R.string.install_button), pIntent)
                     .setVibrate(new long[]{100, 400})
                     .build();
-        }else if(check == 2) {
-            Intent intent = new Intent(app, AppUpdateService.class);
-            PendingIntent pIntent = PendingIntent.getService(app, 0, intent, 0);
-
-            notification = new NotificationCompat.Builder(app)
-                    .setSmallIcon(R.mipmap.ic_updater)
-                    .setPriority(2)
-                    .setContentTitle(title)
-                    .setContentText(txt)
-                    .addAction(R.drawable.ic_download_button, "Pobierz", pIntent)
-                    .extend(new NotificationCompat.WearableExtender()
-                            .setHintShowBackgroundOnly(true))
-                    .setPriority(2)
-                    .setVibrate(new long[]{100, 400})
-                    .build();
-
         } else if(check==3) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory()+"/"+Environment.DIRECTORY_DOWNLOADS+"/update.apk")), "application/vnd.android.package-archive");
@@ -114,26 +98,6 @@ public class Notifications {
     {
         if(type == 0) {
             Intent intent = new Intent(app, DownloadService.class);
-            intent.setAction("ACTION_STOP_SERVICE");
-            PendingIntent pIntent = PendingIntent.getService(app, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-            Notification notification = new NotificationCompat.Builder(app)
-                    .setSmallIcon(R.mipmap.ic_updater)
-                    .setPriority(2)
-                    .setContentTitle(title)
-                    .setContentText(txt)
-                    .extend(new NotificationCompat.WearableExtender()
-                            .setHintShowBackgroundOnly(true))
-                    .setPriority(2)
-                    .setProgress(100, value, progress)
-                    .addAction(R.drawable.ic_cancle, res.getString(R.string.cancle_button), pIntent)
-                    .build();
-            notification.flags |= Notification.FLAG_NO_CLEAR;
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(app);
-            int notificationId = 1;
-            notificationManager.notify(notificationId, notification);
-        } else if(type == 1) {
-            Intent intent = new Intent(app, AppUpdateService.class);
             intent.setAction("ACTION_STOP_SERVICE");
             PendingIntent pIntent = PendingIntent.getService(app, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
