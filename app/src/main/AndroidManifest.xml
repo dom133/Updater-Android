@@ -60,11 +60,6 @@
         <activity android:name=".Report" />
         <activity android:name=".InformationActivity" />
 
-        <service
-            android:name=".AppUpdateService"
-            android:enabled="true"
-            android:exported="false"
-            android:process=":App_Update_Service" />
     </application>
 
 </manifest>

@@ -28,5 +28,5 @@
     <string name="app_message">Dostępna jest nowa wersja aplikacji!!!</string>
     <string name="time_actu_txt">Częstotliwośc sprawdzania aktualizacji:</string>
     <string name="time_txt">Częstotliwość informowania o nowej wersji:</string>
-    <string name="gapps_link" translatable="false">https://www.dropbox.com/s/ud46y0kjmrsr613/gapps.zip?dl=1</string>
+    <string name="gapps_link" translatable="false">http://app-updater.pl/updates/txt/download_gapps.txt</string>
 </resources>
