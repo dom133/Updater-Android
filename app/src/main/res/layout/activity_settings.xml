@@ -97,6 +97,12 @@
             android:text="@string/gapps_text"
             android:id="@+id/gapps" />
 
+        <Switch
+            android:text="@string/changelog_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/changelog" />
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -29,4 +29,6 @@
     <string name="time_actu_txt">Częstotliwośc sprawdzania aktualizacji:</string>
     <string name="time_txt">Częstotliwość informowania o nowej wersji:</string>
     <string name="gapps_link" translatable="false">http://app-updater.pl/updates/txt/download_gapps.txt</string>
+    <string name="changelog_button">Pokaż changelog</string>
+    <string name="changelog_text">Pokazywać changelog po każdej aktualizacji?</string>
 </resources>

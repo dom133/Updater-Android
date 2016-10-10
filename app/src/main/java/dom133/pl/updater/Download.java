@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Download {
@@ -42,6 +44,20 @@ public class Download {
                 return null;
             }
         return null;
+    }
+
+    public static ArrayList<String> getChangelog() {
+        try {
+            ArrayList<String> changes = new ArrayList<>();
+            URL url2 = new URL("http://app-updater.pl/updates/txt/changelog.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(url2.openStream()));
+            String line;
+            while ((line = br.readLine()) != null) {
+                changes.add(line);
+            }
+            return changes;
+
+        } catch (Exception e) {Log.e("ERROR", e.getMessage()); return null;}
     }
 
     public String getProp(String name) {

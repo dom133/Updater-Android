@@ -2,8 +2,10 @@ package dom133.pl.updater;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -15,17 +17,22 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Main extends AppCompatActivity {
 
     private Resources res;
-    private String update = null;
+    private SharedPreferences sPref;
     private static String TAG = "Permission";
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -37,6 +44,8 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sPref = getSharedPreferences("Updater", Context.MODE_PRIVATE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,7 +86,33 @@ public class Main extends AppCompatActivity {
             }
         });
 
+        //Changelog Dialog
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View changelogDialogView = factory.inflate(R.layout.changelog_dialog, null);
+        final AlertDialog changelogDialog = new AlertDialog.Builder(this).create();
+        changelogDialog.setView(changelogDialogView);
+        changelogDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                ListView changes = (ListView) changelogDialogView.findViewById(R.id.changelog_list);
+                ArrayList<String> changes_list = Download.getChangelog();
+                ArrayAdapter<String> changes_adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, changes_list);
+                changes.setAdapter(changes_adapter);
+            }
+        });
+
+        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Download.getChangelog()!=null) {changelogDialog.show();}
+                else {Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();}
+            }
+        });
+
+
         startService(new Intent(this, VersionChecker.class));
+
+        if(sPref.getBoolean("isChangelog", false)) {if(Download.getChangelog()!=null) {changelogDialog.show();}sPref.edit().putBoolean("isChangelog", false).commit();} //Show changelog
     }
 
 

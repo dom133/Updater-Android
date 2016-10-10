@@ -22,7 +22,7 @@ public class InformationActivity extends AppCompatActivity {
         TextView version = (TextView) findViewById(R.id.textView);
         String version_txt = (String)version.getText();
         try {
-            version.setText(version_txt.replace("$1", "V"+BuildConfig.VERSION_NAME));
+            version.setText(version_txt.replace("$1", BuildConfig.VERSION_NAME));
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage());
         }

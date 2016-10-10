@@ -66,42 +66,40 @@ public class VersionChecker extends Service {
 
         protected String doInBackground(String... params) {
             while(!isCancelled()) {
-                File file = new File(Environment.getExternalStorageDirectory().getPath()+"/Update.txt");
-                File update = new File(Environment.getExternalStorageDirectory().getPath()+"/Install.txt");
-                if(update.exists()) {
-                    update.delete();
-                    file.delete();
-                    sPref.edit().putBoolean("isUpdate", false).commit();
-                    new File(Environment.getExternalStorageDirectory()+"/update.zip").delete();
-                    new File(Environment.getExternalStorageDirectory()+"/update.zip.md5").delete();
-                    new File(Environment.getExternalStorageDirectory().getPath()+"/supersu.zip").delete();
-                    new File(Environment.getExternalStorageDirectory().getPath()+"/xposed.zip").delete();
-                    new File(Environment.getExternalStorageDirectory().getPath()+"/gapps.zip").delete();
-                }
-
                 try {
-                    if(!sPref.getBoolean("isUpdate", false)) {
-                        if (!download.DownloadString(res.getString(R.string.version_url)).equals(download.getProp("ro.cm.version")) && download.DownloadString(res.getString(R.string.version_url))!=null) {
-                            notifications.sendNotification("Updater", res.getString(R.string.version_message), 0);
-                            Log.i("INFO", "ROM "+String.valueOf(sPref.getInt("Actu", (1000*60)*30)));
-                            Thread.sleep(sPref.getInt("Actu", (1000*60)*30));
-                        } else {
-                            Log.i("INFO", "Sleep: "+String.valueOf(sPref.getInt("Time", (1000*60))));
-                            Thread.sleep(sPref.getInt("Time", (1000*60)));
-                        }
-                    } else {Log.i("INFO", "File exist");}
-                } catch(java.lang.InterruptedException e) {
-                    Log.e("ERROR", e.getMessage());
-                }
+                    File file = new File(Environment.getExternalStorageDirectory().getPath() + "/Update.txt");
+                    File update = new File(Environment.getExternalStorageDirectory().getPath() + "/Install.txt");
+                    if (update.exists()) {
+                        if(!sPref.getBoolean("isChange", false)) {sPref.edit().putBoolean("isChangelog", true).commit();}
+                        update.delete();
+                        file.delete();
+                        sPref.edit().putBoolean("isUpdate", false).commit();
+                        new File(Environment.getExternalStorageDirectory() + "/update.zip").delete();
+                        new File(Environment.getExternalStorageDirectory() + "/update.zip.md5").delete();
+                        new File(Environment.getExternalStorageDirectory().getPath() + "/supersu.zip").delete();
+                        new File(Environment.getExternalStorageDirectory().getPath() + "/xposed.zip").delete();
+                        new File(Environment.getExternalStorageDirectory().getPath() + "/gapps.zip").delete();
+                        sPref.edit().putBoolean("isDownError", false);
+                    }
+
+                    if (!sPref.getBoolean("isDownError", false)) { //Check is download error
+                        if (!sPref.getBoolean("isUpdate", false)) {
+                            if (!download.DownloadString(res.getString(R.string.version_url)).equals(download.getProp("ro.cm.version")) && download.DownloadString(res.getString(R.string.version_url)) != null) {
+                                notifications.sendNotification("Updater", res.getString(R.string.version_message), 0);
+                                Log.i("INFO", "ROM " + String.valueOf(sPref.getInt("Actu", (1000 * 60) * 30)));
+                                Thread.sleep(sPref.getInt("Actu", (1000 * 60) * 30));
+                            } else {
+                                Log.i("INFO", "Sleep: " + String.valueOf(sPref.getInt("Time", (1000 * 60))));
+                                Thread.sleep(sPref.getInt("Time", (1000 * 60)));
+                            }
+                        } else {Log.i("INFO", "File exist");}
+                    } else {Log.i("INFO", "isError");Thread.sleep(1800000); sPref.edit().putBoolean("isDownError", false);}
+                } catch (Exception e) {Log.e("ERROR", e.getMessage());return null;}
             }
             return null;
         }
 
         @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            running=false;
-        }
+        protected void onCancelled() {super.onCancelled();running=false;}
     }
-
 }

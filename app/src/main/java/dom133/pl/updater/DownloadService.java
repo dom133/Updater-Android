@@ -102,7 +102,7 @@ public class DownloadService extends Service {
         Log.i("INFO", "Download service stopped");
         File file = new File(Environment.getExternalStorageDirectory().getPath()+"/Update.txt");
         if(file.exists()) {Log.i("INFO", "File deleted"); file.delete();}
-        if(isCancled)notifications.sendNotification("Updater", res.getString(R.string.cancle_message), 0);
+        if(isCancled) {notifications.sendNotification("Updater", res.getString(R.string.cancle_message), 0); sPref.edit().putBoolean("isDownError", true);}
         sPref.edit().putBoolean("isUpdate", false).commit();
         downloadFile.cancel(true);
         sPref = null;
@@ -199,7 +199,7 @@ public class DownloadService extends Service {
                         byte data[] = new byte[54 * 1024];
                         long total = 0;
 
-                        notifications.sendNotificationDownload("Updater", "Pobrano: 0% 0Mb/" + (lenghtoffile/1048576) + "Mb", 0, false, 0);
+                        notifications.sendNotificationDownload("Updater", "Pobrano: 0% 0MB/" + (lenghtoffile/1048576) + "MB", 0, false, 0);
 
                         while ((count = input.read(data)) != -1 && !isCancelled()) {
                             total += count;
@@ -224,6 +224,7 @@ public class DownloadService extends Service {
 
                 } catch (Exception e) {
                     Log.i("ERROR", e.getMessage());
+                    sPref.edit().putBoolean("isDownError", true);
                     if(!isCancled)notifications.sendNotification("Updater", res.getString(R.string.download_incomplete), 0);
                     startService(new Intent(getApplicationContext(), VersionChecker.class));
                     stopSelf();
@@ -236,8 +237,8 @@ public class DownloadService extends Service {
         @Override
         protected void onProgressUpdate(Integer... progres) {
             super.onProgressUpdate(progres);
-            if(progress!=progres[0]) {notifications.sendNotificationDownload("Updater", "Pobrano: "+progres[0]+"% "+progres[1]+"Mb/"+progres[2]+"Mb", progres[0], false, 0);}
-            else if(downloaded!=progres[1]) {notifications.sendNotificationDownload("Updater", "Pobrano: "+progres[0]+"% "+progres[1]+"Mb/"+progres[2]+"Mb", progres[0], false, 0);}
+            if(progress!=progres[0]) {notifications.sendNotificationDownload("Updater", "Pobrano: "+progres[0]+"% "+progres[1]+"MB/"+progres[2]+"MB", progres[0], false, 0);}
+            else if(downloaded!=progres[1]) {notifications.sendNotificationDownload("Updater", "Pobrano: "+progres[0]+"% "+progres[1]+"MB/"+progres[2]+"MB", progres[0], false, 0);}
             progress = progres[0];
             downloaded = progres[1];
         }
@@ -245,7 +246,7 @@ public class DownloadService extends Service {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if(s!=null)notifications.sendNotification("Updater", res.getString(R.string.download_complete), 1);
+            if(s!=null){notifications.sendNotification("Updater", res.getString(R.string.download_complete), 1); sPref.edit().putBoolean("isDownError", true);}
             stopSelf();
         }
 
@@ -253,52 +254,6 @@ public class DownloadService extends Service {
         protected void onCancelled() {
             running = false;
             Log.i("INFO", "AsyncTask canclled");
-        }
-
-        public HashSet<String> getExternalMounts()
-        {
-
-            final HashSet<String> out = new HashSet<String>();
-            String reg = "(?i).*vold.*(vfat|ntfs|exfat|fat32|ext3|ext4).*rw.*";
-            String s = "";
-            try
-            {
-                final Process process = new ProcessBuilder().command("mount").redirectErrorStream(true).start();
-                process.waitFor();
-                final InputStream is = process.getInputStream();
-                final byte[] buffer = new byte[1024];
-                while(is.read(buffer) != -1)
-                {
-                    s = s + new String(buffer);
-                }
-                is.close();
-            }
-            catch(Exception e)
-            {
-                Log.e("ERROR",e.getMessage());
-            }
-            final String[] lines = s.split("\n");
-            for (String line : lines)
-            {
-                if(!line.toLowerCase(Locale.US).contains("asec"))
-                {
-                    if(line.matches(reg))
-                    {
-                        String[] parts = line.split(" ");
-                        for(String part : parts)
-                        {
-                            if(part.startsWith("/"))
-                            {
-                                if(!part.toLowerCase(Locale.US).contains("vold"))
-                                {
-                                    out.add(part);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return out;
         }
     }
 }
