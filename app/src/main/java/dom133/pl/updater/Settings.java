@@ -57,7 +57,7 @@ public class Settings extends AppCompatActivity {
         supersu.setChecked(sPref.getBoolean("isSuperSU", false));
         xposed.setChecked(sPref.getBoolean("isXposed", false));
         gapps.setChecked(sPref.getBoolean("isGapps", false));
-        changelog.setChecked(sPref.getBoolean("isChangelog", false));
+        changelog.setChecked(sPref.getBoolean("isChange", false));
         time.setSelection(sPref.getInt("Time_spinner", 0));
         actu.setSelection(sPref.getInt("Actu_spinner", 3));
 

@@ -27,15 +27,6 @@
             android:id="@+id/button" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/download_button"
-            android:id="@+id/button2"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentStart="true"
-            android:visibility="invisible" />
-
-        <Button
             android:text="@string/changelog_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

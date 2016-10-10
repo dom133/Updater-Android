@@ -33,6 +33,7 @@ public class Main extends AppCompatActivity {
 
     private Resources res;
     private SharedPreferences sPref;
+    private boolean isUpdate=false;
     private static String TAG = "Permission";
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -59,29 +60,24 @@ public class Main extends AppCompatActivity {
 
         final Download download = new Download(getApplication());
         final Button button = (Button) findViewById(R.id.button);
-        final Button button2 = (Button) findViewById(R.id.button2);
-
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startService(new Intent(getApplicationContext(), DownloadService.class));
-                Toast.makeText(getApplication(), "Pobieranie rozpoczęte!!!", Toast.LENGTH_SHORT).show();
-                button2.setEnabled(false);
-            }
-        });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("INFO", "String: " + download.getProp("ro.cm.version") + " DownloadString: " + download.DownloadString(res.getString(R.string.version_url))+" True: "+Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url))));
-                if (Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url)))) {
-                    Toast.makeText(getApplication(), "Nie znaleziono nowej wersji!!!", Toast.LENGTH_SHORT).show();
-                } else if (download.DownloadString(res.getString(R.string.version_url)) == null) {
-                    Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();
+                if(!isUpdate) {
+                    Log.i("INFO", "String: " + download.getProp("ro.cm.version") + " DownloadString: " + download.DownloadString(res.getString(R.string.version_url)) + " True: " + Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url))));
+                    if (Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url)))) {
+                        Toast.makeText(getApplication(), "Nie znaleziono nowej wersji!!!", Toast.LENGTH_SHORT).show();
+                    } else if (download.DownloadString(res.getString(R.string.version_url)) == null) {
+                        Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplication(), res.getString(R.string.version_message), Toast.LENGTH_SHORT).show();
+                        button.setText("Pobierz");
+                        isUpdate = true;
+                    }
                 } else {
-                    Toast.makeText(getApplication(), res.getString(R.string.version_message), Toast.LENGTH_SHORT).show();
-                    button2.setVisibility(View.VISIBLE);
-                    button.setVisibility(View.GONE);
+                    startService(new Intent(getApplicationContext(), DownloadService.class));
+                    Toast.makeText(getApplication(), "Pobieranie rozpoczęte!!!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -106,6 +102,13 @@ public class Main extends AppCompatActivity {
             public void onClick(View v) {
                 if(Download.getChangelog()!=null) {changelogDialog.show();}
                 else {Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();}
+            }
+        });
+
+        changelogDialogView.findViewById(R.id.close_changelog_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changelogDialog.cancel();
             }
         });
 
