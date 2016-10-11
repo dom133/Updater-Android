@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.firebase.crash.FirebaseCrash;
@@ -46,6 +47,7 @@ public class Download {
         return null;
     }
 
+    @Nullable
     public static ArrayList<String> getChangelog() {
         try {
             ArrayList<String> changes = new ArrayList<>();
@@ -58,30 +60,5 @@ public class Download {
             return changes;
 
         } catch (Exception e) {Log.e("ERROR", e.getMessage()); return null;}
-    }
-
-    public String getProp(String name) {
-
-        try {
-            Process process = Runtime.getRuntime().exec("getprop "+name);
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-            int read;
-            char[] buffer = new char[4096];
-            StringBuffer output = new StringBuffer();
-            while ((read = reader.read(buffer)) > 0) {
-                output.append(buffer, 0, read);
-            }
-            reader.close();
-            process.waitFor();
-
-            String out = output.toString();
-            out = out.replaceAll("\\s+","");
-            return out;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

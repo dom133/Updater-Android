@@ -24,12 +24,12 @@ import java.util.Objects;
 
 public class DownloadService extends Service {
 
-
-    Notifications notifications;
-    Resources res;
-    Download download;
-    SharedPreferences sPref;
-    DownloadFile downloadFile;
+    private Cm cm = new Cm();
+    private Notifications notifications;
+    private Resources res;
+    private Download download;
+    private SharedPreferences sPref;
+    private DownloadFile downloadFile;
     boolean isCancled = false;
 
     public DownloadService() {
@@ -61,34 +61,34 @@ public class DownloadService extends Service {
                 startService(intent_vers);
                 new File(Environment.getExternalStorageDirectory().getPath() + "/Update.txt").createNewFile();
 
-                if (downloadFile.running) {
-                    downloadFile.cancel(true);
-                }
+                if (downloadFile.running) {downloadFile.cancel(true);}
+
+                sPref.edit().putBoolean("isUpdate", true).commit();
 
                 Log.i("INFO", "SuperSu: " + sPref.getBoolean("isSuperSU", false) + " Xposed: " + sPref.getBoolean("isXposed", false) + " Gapps: " + sPref.getBoolean("isGapps", false));
                 if (sPref.getBoolean("isSuperSU", false)) {
                     if (sPref.getBoolean("isXposed", false)) {
                         if (sPref.getBoolean("isGapps", false)) {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip", download.DownloadString(res.getString(R.string.gapps_link)), "gapps.zip");
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt")+".md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip", download.DownloadString(res.getString(R.string.gapps_link)+"-"+cm.getCMVersion()+".txt"), "gapps.zip");
                         } else {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip");
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt")+".md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip");
                         }
                     } else {
                         if (sPref.getBoolean("isGapps", false)) {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip", download.DownloadString(res.getString(R.string.gapps_link)), "gapps.zip");
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt")+".md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip", download.DownloadString(res.getString(R.string.gapps_link)+"-"+cm.getCMVersion()+".txt"), "gapps.zip");
                         } else {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip");
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt")+".md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip");
                         }
                     }
                 } else {
                     if (sPref.getBoolean("isXposed", false)) {
                         if (sPref.getBoolean("isGaaps", false)) {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", res.getString(R.string.xposed_link), "xposed.zip", download.DownloadString(res.getString(R.string.gapps_link)), "gapps.zip");
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt")+".md5", "update.zip.md5", res.getString(R.string.xposed_link), "xposed.zip", download.DownloadString(res.getString(R.string.gapps_link)+"-"+cm.getCMVersion()+".txt"), "gapps.zip");
                         } else {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5", res.getString(R.string.xposed_link), "xposed.zip");
+                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt")+".md5", "update.zip.md5", res.getString(R.string.xposed_link), "xposed.zip");
                         }
                     } else {
-                        downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)), "update.zip", download.DownloadString(res.getString(R.string.download_url))+".md5", "update.zip.md5");
+                        downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt")+".md5", "update.zip.md5");
                     }
                 }
                 return START_STICKY;
@@ -247,6 +247,7 @@ public class DownloadService extends Service {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if(s!=null){notifications.sendNotification("Updater", res.getString(R.string.download_complete), 1); sPref.edit().putBoolean("isDownError", true);}
+            else {sPref.edit().putBoolean("isFinishedUpdate", true).commit();}
             stopSelf();
         }
 

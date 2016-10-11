@@ -17,10 +17,11 @@ import java.util.Objects;
 
 public class VersionChecker extends Service {
 
-    Download download;
-    Notifications notifications;
-    Resources res;
-    SharedPreferences sPref;
+    private Download download;
+    private Cm cm = new Cm();
+    private Notifications notifications;
+    private Resources res;
+    private SharedPreferences sPref;
     private NotificationTask nTask;
 
     @Override
@@ -83,8 +84,8 @@ public class VersionChecker extends Service {
                     }
 
                     if (!sPref.getBoolean("isDownError", false)) { //Check is download error
-                        if (!sPref.getBoolean("isUpdate", false)) {
-                            if (!download.DownloadString(res.getString(R.string.version_url)).equals(download.getProp("ro.cm.version")) && download.DownloadString(res.getString(R.string.version_url)) != null) {
+                        if (!sPref.getBoolean("isUpdate", false) || !sPref.getBoolean("isFinishedUpdate", false)) {
+                            if (!download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt").equals(cm.getProp("ro.cm.version")) && download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt") != null) {
                                 notifications.sendNotification("Updater", res.getString(R.string.version_message), 0);
                                 Log.i("INFO", "ROM " + String.valueOf(sPref.getInt("Actu", (1000 * 60) * 30)));
                                 Thread.sleep(sPref.getInt("Actu", (1000 * 60) * 30));

@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Updater</string>
-    <string name="version_url" translatable="false">http://app-updater.pl/updates/txt/version.txt</string>
+    <string name="version_url" translatable="false">http://app-updater.pl/updates/txt/version</string>
     <string name="sprawdz_aktualizacje">Sprawdz Aktualizacje</string>
     <string name="version_message">Dostępna jest nowa wersja romu!!!</string>
     <string name="version_message_app">Dostępna jest nowa wersja aplikacji!!!</string>
-    <string name="download_url" translatable="false">http://app-updater.pl/updates/txt/download_link.txt</string>
+    <string name="download_url" translatable="false">http://app-updater.pl/updates/txt/download_link</string>
     <string name="download_complete">Pobieranie zostało ukończone!!!</string>
     <string name="download_incomplete">Pobieranie nie zostało ukończone!!!</string>
     <string name="install_button">Zainstaluj</string>
@@ -28,7 +28,7 @@
     <string name="app_message">Dostępna jest nowa wersja aplikacji!!!</string>
     <string name="time_actu_txt">Częstotliwośc sprawdzania aktualizacji:</string>
     <string name="time_txt">Częstotliwość informowania o nowej wersji:</string>
-    <string name="gapps_link" translatable="false">http://app-updater.pl/updates/txt/download_gapps.txt</string>
+    <string name="gapps_link" translatable="false">http://app-updater.pl/updates/txt/download_gapps</string>
     <string name="changelog_button">Pokaż changelog</string>
     <string name="changelog_text">Pokazywać changelog po każdej aktualizacji</string>
     <string name="close_changelog_dialog_txt">Zamknij</string>

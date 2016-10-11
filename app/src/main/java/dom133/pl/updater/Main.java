@@ -33,6 +33,7 @@ public class Main extends AppCompatActivity {
 
     private Resources res;
     private SharedPreferences sPref;
+    private Cm cm = new Cm();
     private boolean isUpdate=false;
     private static String TAG = "Permission";
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -65,10 +66,10 @@ public class Main extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!isUpdate) {
-                    Log.i("INFO", "String: " + download.getProp("ro.cm.version") + " DownloadString: " + download.DownloadString(res.getString(R.string.version_url)) + " True: " + Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url))));
-                    if (Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url)))) {
+                    Log.i("INFO", "CM: "+cm.getCMVersion()+" String: " + cm.getProp("ro.cm.version") + " DownloadString: " + download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt") + " True: " + Objects.equals(cm.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt")));
+                    if (Objects.equals(cm.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt"))) {
                         Toast.makeText(getApplication(), "Nie znaleziono nowej wersji!!!", Toast.LENGTH_SHORT).show();
-                    } else if (download.DownloadString(res.getString(R.string.version_url)) == null) {
+                    } else if (download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt") == null) {
                         Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplication(), res.getString(R.string.version_message), Toast.LENGTH_SHORT).show();
@@ -78,6 +79,7 @@ public class Main extends AppCompatActivity {
                 } else {
                     startService(new Intent(getApplicationContext(), DownloadService.class));
                     Toast.makeText(getApplication(), "Pobieranie rozpoczęte!!!", Toast.LENGTH_SHORT).show();
+                    button.setVisibility(View.GONE);
                 }
             }
         });
