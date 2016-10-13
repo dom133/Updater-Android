@@ -15,6 +15,7 @@ import java.lang.Process;
 
 import android.preference.Preference;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.crash.FirebaseCrash;
 
@@ -35,6 +36,7 @@ public class InstallService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("INFO", "Install service onCommand");
+        Toast.makeText(getApplication(), "Instalacja rozpoczęta", Toast.LENGTH_SHORT).show();
         File file = new File(Environment.getExternalStorageDirectory().getPath()+"/Update.txt");
         if(file.exists()) {Log.i("INFO", "File deleted"); file.delete();}
 

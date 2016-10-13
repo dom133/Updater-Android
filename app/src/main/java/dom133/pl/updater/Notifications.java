@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -35,13 +36,15 @@ public class Notifications {
                     .setPriority(2)
                     .setContentTitle(title)
                     .setContentText(txt)
-                    .addAction(R.drawable.ic_download_button, "Pobierz", pIntent)
+                    .addAction(R.drawable.ic_download_button, res.getString(R.string.download_button), pIntent)
                     .setPriority(2)
                     .setVibrate(new long[] {100, 400})
                     .build();
         } else if(check == 1) {
             Intent intent = new Intent(app, InstallService.class);
             PendingIntent pIntent = PendingIntent.getService(app, 0, intent, 0);
+
+            Toast.makeText(app, "Instalacja zaraz się rozpocznie", Toast.LENGTH_SHORT).show();
 
             notification = new NotificationCompat.Builder(app)
                     .setSmallIcon(R.mipmap.ic_updater)
