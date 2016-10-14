@@ -93,7 +93,7 @@ public class Main extends AppCompatActivity {
             @Override
             public void onShow(DialogInterface dialog) {
                 ListView changes = (ListView) changelogDialogView.findViewById(R.id.changelog_list);
-                ArrayList<String> changes_list = Download.getChangelog();
+                ArrayList<String> changes_list = Download.getChangelog("http://app-updater.pl/updates/txt/changelog-"+cm.getCMVersion()+".txt");
                 ArrayAdapter<String> changes_adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, changes_list);
                 changes.setAdapter(changes_adapter);
             }
@@ -102,7 +102,7 @@ public class Main extends AppCompatActivity {
         findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Download.getChangelog()!=null) {changelogDialog.show();}
+                if(Download.getChangelog("http://app-updater.pl/updates/txt/changelog-"+cm.getCMVersion()+".txt")!=null) {changelogDialog.show();}
                 else {Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();}
             }
         });
@@ -117,7 +117,8 @@ public class Main extends AppCompatActivity {
 
         startService(new Intent(this, VersionChecker.class));
 
-        if(sPref.getBoolean("isChangelog", false)) {if(Download.getChangelog()!=null) {changelogDialog.show();}sPref.edit().putBoolean("isChangelog", false).commit();} //Show changelog
+        //Show Changelog
+        if(sPref.getBoolean("isChangelog", false)) {if(Download.getChangelog("http://app-updater.pl/updates/txt/changelog-"+cm.getCMVersion()+".txt")!=null) {changelogDialog.show();}sPref.edit().putBoolean("isChangelog", false).commit();} //Show changelog
     }
 
 

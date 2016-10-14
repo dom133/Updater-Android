@@ -48,10 +48,10 @@ public class Download {
     }
 
     @Nullable
-    public static ArrayList<String> getChangelog() {
+    public static ArrayList<String> getChangelog(String link) {
         try {
             ArrayList<String> changes = new ArrayList<>();
-            URL url2 = new URL("http://app-updater.pl/updates/txt/changelog.txt");
+            URL url2 = new URL(link);
             BufferedReader br = new BufferedReader(new InputStreamReader(url2.openStream()));
             String line;
             while ((line = br.readLine()) != null) {
