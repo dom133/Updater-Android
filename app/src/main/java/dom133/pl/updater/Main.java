@@ -79,7 +79,7 @@ public class Main extends AppCompatActivity {
                 } else {
                     startService(new Intent(getApplicationContext(), DownloadService.class));
                     Toast.makeText(getApplication(), "Pobieranie rozpoczęte!!!", Toast.LENGTH_SHORT).show();
-                    button.setVisibility(View.GONE);
+                    button.setEnabled(false);
                 }
             }
         });
