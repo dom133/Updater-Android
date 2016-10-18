@@ -22,6 +22,7 @@ public class Report extends AppCompatActivity {
 
     private int selected;
     MySQL mysql = new MySQL();
+    Cm cm = new Cm();
     EditText nick;
     EditText email;
     EditText title;
@@ -80,9 +81,10 @@ public class Report extends AppCompatActivity {
                 }
 
                 if(!error) {
-                    String text = mysql.add(String.valueOf(selected), nick.getText().toString(), email.getText().toString(), title.getText().toString(), contents.getText().toString());
-                    if(text.equals("Poprawnie przyjeto zgloszenie!!!")) {nick.setText(""); email.setText(""); title.setText(""); contents.setText("");}
-                    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+                    int text = Integer.valueOf(mysql.add(String.valueOf(selected), nick.getText().toString(), email.getText().toString(), title.getText().toString(), contents.getText().toString(), cm.getCMVersion()));
+                    if(text==1) {nick.setText(""); email.setText(""); title.setText(""); contents.setText("");}
+                    if(text==1) {Toast.makeText(getApplicationContext(), "Poprawnie przyjęto zgłoszenie!!!", Toast.LENGTH_LONG).show();}
+                    else {Toast.makeText(getApplicationContext(), "Wystąpił błąd podczas dodawania zgłoszenia, spróbuj ponownie", Toast.LENGTH_LONG).show();}
                 }
             }
         });
