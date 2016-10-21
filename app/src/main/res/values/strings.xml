@@ -32,4 +32,5 @@
     <string name="changelog_button">Pokaż changelog</string>
     <string name="changelog_text">Pokazywać changelog po każdej aktualizacji</string>
     <string name="close_changelog_dialog_txt">Zamknij</string>
+    <string name="md5_link">http://app-updater.pl/updates/zip/update</string>
 </resources>
