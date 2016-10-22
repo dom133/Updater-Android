@@ -56,14 +56,12 @@ public class DownloadService extends Service {
         else {
             try {
                 notifications.sendNotificationDownload("Updater", "", 0, true, 0);
-                Intent intent_vers = new Intent(this, VersionChecker.class);
-                intent_vers.setAction("ACTION_STOP");
-                startService(intent_vers);
                 new File(Environment.getExternalStorageDirectory().getPath() + "/Update.txt").createNewFile();
 
                 if (downloadFile.running) {downloadFile.cancel(true);}
 
                 sPref.edit().putBoolean("isUpdate", true).commit();
+                stopService(new Intent(getApplicationContext(), VersionChecker.class));
 
                 Log.i("INFO", "SuperSu: " + sPref.getBoolean("isSuperSU", false) + " Xposed: " + sPref.getBoolean("isXposed", false) + " Gapps: " + sPref.getBoolean("isGapps", false));
                 if (sPref.getBoolean("isSuperSU", false)) {
@@ -226,7 +224,7 @@ public class DownloadService extends Service {
                     Log.i("ERROR", e.getMessage());
                     sPref.edit().putBoolean("isDownError", true);
                     if(!isCancled)notifications.sendNotification("Updater", res.getString(R.string.download_incomplete), 0);
-                    startService(new Intent(getApplicationContext(), VersionChecker.class));
+                    stopService(new Intent(getApplicationContext(), VersionChecker.class));
                     stopSelf();
                     return null;
                 }

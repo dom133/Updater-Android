@@ -41,6 +41,8 @@ public class VersionChecker extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.i("INFO", "Service onDestroy");
+        nTask.cancel(true);
+        startActivity(new Intent(getApplicationContext(), VersionChecker.class));
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
