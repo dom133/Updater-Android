@@ -73,7 +73,7 @@ public class VersionChecker extends Service {
                     File file = new File(Environment.getExternalStorageDirectory().getPath() + "/Update.txt");
                     File update = new File(Environment.getExternalStorageDirectory().getPath() + "/Install.txt");
                     if (update.exists()) {
-                        if(!sPref.getBoolean("isChange", false)) {sPref.edit().putBoolean("isChangelog", true).commit();}
+                        if(sPref.getBoolean("isChange", false)) {sPref.edit().putBoolean("isChangelog", true).commit();}
                         update.delete();
                         file.delete();
                         sPref.edit().putBoolean("isUpdate", false).commit();

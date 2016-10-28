@@ -39,7 +39,7 @@ public class InstallService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("INFO", "Install service onCommand");
         Toast.makeText(getApplication(), "Instalacja rozpoczęta", Toast.LENGTH_SHORT).show();
-        notifications.sendNotificationDownload("Updater", "", 0, true, 0);
+        notifications.sendNotificationDownload("Updater", "", 0, true, 1);
         File file = new File(Environment.getExternalStorageDirectory().getPath()+"/Update.txt");
         if(file.exists()) {Log.i("INFO", "File deleted"); file.delete();}
 

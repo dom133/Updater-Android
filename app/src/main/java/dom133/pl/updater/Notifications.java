@@ -43,9 +43,6 @@ public class Notifications {
         } else if(check == 1) {
             Intent intent = new Intent(app, InstallService.class);
             PendingIntent pIntent = PendingIntent.getService(app, 0, intent, 0);
-
-            Toast.makeText(app, "Instalacja zaraz się rozpocznie", Toast.LENGTH_SHORT).show();
-
             notification = new NotificationCompat.Builder(app)
                     .setSmallIcon(R.mipmap.ic_updater)
                     .setPriority(2)
@@ -84,6 +81,19 @@ public class Notifications {
                     .setPriority(2)
                     .setProgress(100, value, progress)
                     .addAction(R.drawable.ic_cancle, res.getString(R.string.cancle_button), pIntent)
+                    .build();
+            notification.flags |= Notification.FLAG_NO_CLEAR;
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(app);
+            int notificationId = 1;
+            notificationManager.notify(notificationId, notification);
+        } else if(type == 1) {
+            Notification notification = new NotificationCompat.Builder(app)
+                    .setSmallIcon(R.mipmap.ic_updater)
+                    .setPriority(2)
+                    .setContentTitle(title)
+                    .setContentText(txt)
+                    .setPriority(2)
+                    .setProgress(100, value, progress)
                     .build();
             notification.flags |= Notification.FLAG_NO_CLEAR;
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(app);

@@ -118,7 +118,7 @@ public class Main extends AppCompatActivity {
         startService(new Intent(this, VersionChecker.class));
 
         //Show Changelog
-        if(sPref.getBoolean("isChangelog", false)) {if(Download.getChangelog("http://app-updater.pl/updates/txt/changelog-"+cm.getCMVersion()+".txt")!=null) {changelogDialog.show();}sPref.edit().putBoolean("isChangelog", false).commit();} //Show changelog
+        if(sPref.getBoolean("isChangelog", false)) {if(Download.getChangelog("http://app-updater.pl/updates/txt/changelog-"+cm.getCMVersion()+".txt")!=null) {changelogDialog.show(); sPref.edit().putBoolean("isChangelog", false).commit();}} //Show changelog
     }
 
 
