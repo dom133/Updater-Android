@@ -73,7 +73,7 @@ public class Settings extends AppCompatActivity {
                 else if(i==4) {sPref.edit().putInt("Time", (1000*60)*60).commit();}
                 else if(i==5) {sPref.edit().putInt("Time", (1000*60)*120).commit();}
                 else if(i==6) {sPref.edit().putInt("Time", (1000*60)*240).commit();}
-
+                stopService(new Intent(getApplicationContext(), VersionChecker.class));
             }
 
             @Override
@@ -94,6 +94,7 @@ public class Settings extends AppCompatActivity {
                 else if(i==4) {sPref.edit().putInt("Actu", (1000*60)*60).commit();}
                 else if(i==5) {sPref.edit().putInt("Actu", (1000*60)*120).commit();}
                 else if(i==6) {sPref.edit().putInt("Actu", (1000*60)*240).commit();}
+                stopService(new Intent(getApplicationContext(), VersionChecker.class));
             }
 
             @Override
