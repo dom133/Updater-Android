@@ -4,6 +4,7 @@ package dom133.pl.updater;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 public class Cm {
 
@@ -33,6 +34,7 @@ public class Cm {
 
     public String getCMVersion(){
         String prop = getProp("ro.cm.version");
-        return "cm"+Character.toString(prop.charAt(0))+Character.toString(prop.charAt(1));
+        if(!Objects.equals(Character.toString(prop.charAt(0)) + Character.toString(prop.charAt(1)), "14")){ return "cm"+Character.toString(prop.charAt(0))+Character.toString(prop.charAt(1)); }
+        else { return "cm"+Character.toString(prop.charAt(0))+Character.toString(prop.charAt(1))+".1"; }
     }
 }

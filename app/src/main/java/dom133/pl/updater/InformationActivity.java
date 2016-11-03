@@ -21,8 +21,19 @@ public class InformationActivity extends AppCompatActivity {
         if(actionBar!=null){actionBar.setDisplayHomeAsUpEnabled(true);actionBar.setTitle("Informacje o aplikacji");}
         TextView version = (TextView) findViewById(R.id.textView);
         String version_txt = (String)version.getText();
+        TextView os= (TextView) findViewById(R.id.textView8);
+        String os_txt = (String)os.getText();
+
+        Cm cm = new Cm();
+
         try {
             version.setText(version_txt.replace("$1", BuildConfig.VERSION_NAME));
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage());
+        }
+
+        try {
+            os.setText(os_txt.replace("$1", cm.getCMVersion().toUpperCase()));
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage());
         }

@@ -42,7 +42,7 @@ public class VersionChecker extends Service {
         super.onDestroy();
         Log.i("INFO", "Service onDestroy");
         nTask.cancel(true);
-        startActivity(new Intent(this, VersionChecker.class));
+        startService(new Intent(this, VersionChecker.class));
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 

@@ -36,7 +36,7 @@ public class MySQL {
             return json.getString("success");
         } catch(Exception e) {
             Log.e("INFO", e.getMessage());
-            return "Wystąpił nie oczekiwany blad!!!";
+            return "0";
         }
     }
 }
