@@ -87,10 +87,10 @@ public class VersionChecker extends Service {
 
                     if (!sPref.getBoolean("isDownError", false)) { //Check is download error
                         if (!sPref.getBoolean("isUpdate", false) || !sPref.getBoolean("isFinishedUpdate", false)) {
-                            if (!download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt").equals(cm.getProp("ro.cm.version")) && download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt") != null) {
+                            if (!download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt").equals(cm.getProp("ro.cm.version")) && download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt") != null && !Objects.equals(download.DownloadString(res.getString(R.string.version_url) + "-" + cm.getCMVersion() + ".txt"), "false")) {
                                 notifications.sendNotification("Updater", res.getString(R.string.version_message), 0);
-                                Log.i("INFO", "ROM " + String.valueOf(sPref.getInt("Actu", (1000 * 60) * 30)));
-                                Thread.sleep(sPref.getInt("Actu", (1000 * 60) * 30));
+                                Log.i("INFO", "ROM " + String.valueOf(sPref.getInt("Time", (1000 * 60) * 30)));
+                                Thread.sleep(sPref.getInt("Time", (1000 * 60) * 30));
                             } else {
                                 Log.i("INFO", "Sleep: " + String.valueOf(sPref.getInt("Time", (1000 * 60))));
                                 Thread.sleep(sPref.getInt("Time", (1000 * 60)));

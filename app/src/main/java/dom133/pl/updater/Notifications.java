@@ -30,7 +30,6 @@ public class Notifications {
         if(check == 0) {
           Intent intent = new Intent(app, DownloadService.class);
           PendingIntent pIntent = PendingIntent.getService(app, 0, intent, 0);
-
             notification = new NotificationCompat.Builder(app)
                     .setSmallIcon(R.mipmap.ic_updater)
                     .setPriority(2)

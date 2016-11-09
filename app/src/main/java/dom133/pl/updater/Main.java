@@ -71,6 +71,8 @@ public class Main extends AppCompatActivity {
                         Toast.makeText(getApplication(), "Nie znaleziono nowej wersji!!!", Toast.LENGTH_SHORT).show();
                     } else if (download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt") == null) {
                         Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();
+                    } else if(Objects.equals(download.DownloadString(res.getString(R.string.version_url) + "-" + cm.getCMVersion() + ".txt"), "false")) {
+                        Toast.makeText(getApplication(), "Dla tej wersji systemu aktualizacja jest aktualnie wyłączona", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplication(), res.getString(R.string.version_message), Toast.LENGTH_SHORT).show();
                         button.setText("Pobierz");
@@ -83,6 +85,7 @@ public class Main extends AppCompatActivity {
                 }
             }
         });
+
 
         //Changelog Dialog
         LayoutInflater factory = LayoutInflater.from(this);
@@ -102,7 +105,8 @@ public class Main extends AppCompatActivity {
         findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Download.getChangelog("http://app-updater.pl/updates/txt/changelog-"+cm.getCMVersion()+".txt")!=null) {changelogDialog.show();}
+                if(Objects.equals(download.DownloadString(res.getString(R.string.version_url) + "-" + cm.getCMVersion() + ".txt"), "false")) { Toast.makeText(getBaseContext(), "Changelog dla tej wersji systemu jest aktualnie wyłączony", Toast.LENGTH_SHORT).show();}
+                else if(Download.getChangelog("http://app-updater.pl/updates/txt/changelog-"+cm.getCMVersion()+".txt")!=null) {changelogDialog.show();}
                 else {Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();}
             }
         });
@@ -114,6 +118,11 @@ public class Main extends AppCompatActivity {
             }
         });
 
+        //Show Assets Menu
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {startActivity(new Intent(getApplication(), Assets.class));}
+        });
 
         startService(new Intent(this, VersionChecker.class));
 

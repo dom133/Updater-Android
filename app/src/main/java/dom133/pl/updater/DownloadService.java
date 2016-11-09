@@ -63,32 +63,6 @@ public class DownloadService extends Service {
                 sPref.edit().putBoolean("isUpdate", true).commit();
                 stopService(new Intent(getApplicationContext(), VersionChecker.class));
 
-                Log.i("INFO", "SuperSu: " + sPref.getBoolean("isSuperSU", false) + " Xposed: " + sPref.getBoolean("isXposed", false) + " Gapps: " + sPref.getBoolean("isGapps", false));
-                if (sPref.getBoolean("isSuperSU", false)) {
-                    if (sPref.getBoolean("isXposed", false)) {
-                        if (sPref.getBoolean("isGapps", false)) {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", res.getString(R.string.md5_link)+"-"+cm.getCMVersion()+".zip.md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip", download.DownloadString(res.getString(R.string.gapps_link)+"-"+cm.getCMVersion()+".txt"), "gapps.zip");
-                        } else {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", res.getString(R.string.md5_link)+"-"+cm.getCMVersion()+".zip.md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip", res.getString(R.string.xposed_link), "xposed.zip");
-                        }
-                    } else {
-                        if (sPref.getBoolean("isGapps", false)) {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", res.getString(R.string.md5_link)+"-"+cm.getCMVersion()+".zip.md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip", download.DownloadString(res.getString(R.string.gapps_link)+"-"+cm.getCMVersion()+".txt"), "gapps.zip");
-                        } else {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", res.getString(R.string.md5_link)+"-"+cm.getCMVersion()+".zip.md5", "update.zip.md5", download.DownloadString(res.getString(R.string.supersu_link)), "supersu.zip");
-                        }
-                    }
-                } else {
-                    if (sPref.getBoolean("isXposed", false)) {
-                        if (sPref.getBoolean("isGaaps", false)) {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", res.getString(R.string.md5_link)+"-"+cm.getCMVersion()+".zip.md5", "update.zip.md5", res.getString(R.string.xposed_link), "xposed.zip", download.DownloadString(res.getString(R.string.gapps_link)+"-"+cm.getCMVersion()+".txt"), "gapps.zip");
-                        } else {
-                            downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", res.getString(R.string.md5_link)+"-"+cm.getCMVersion()+".zip.md5", "update.zip.md5", res.getString(R.string.xposed_link), "xposed.zip");
-                        }
-                    } else {
-                        downloadFile.execute(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"), "update.zip", res.getString(R.string.md5_link)+"-"+cm.getCMVersion()+".zip.md5", "update.zip.md5");
-                    }
-                }
                 return START_STICKY;
             } catch(Exception e) {Log.e("ERROR", e.getMessage());return START_STICKY;}
         }
@@ -100,7 +74,7 @@ public class DownloadService extends Service {
         Log.i("INFO", "Download service stopped");
         File file = new File(Environment.getExternalStorageDirectory().getPath()+"/Update.txt");
         if(file.exists()) {Log.i("INFO", "File deleted"); file.delete();}
-        if(isCancled) {notifications.sendNotification("Updater", res.getString(R.string.cancle_message), 0); sPref.edit().putBoolean("isDownError", true);}
+        if(isCancled) {notifications.sendNotification("Updater", res.getString(R.string.cancle_message), 0);sPref.edit().putBoolean("isDownError", true);}
         sPref.edit().putBoolean("isUpdate", false).commit();
         downloadFile.cancel(true);
         sPref = null;

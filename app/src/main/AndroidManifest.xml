@@ -50,16 +50,16 @@
             android:enabled="true"
             android:exported="false"
             android:process=":Download_Service" />
-
         <service
             android:name=".InstallService"
             android:enabled="true"
             android:exported="false"
-            android:process=":Install_Service"/>
+            android:process=":Install_Service" />
 
         <activity android:name=".Settings" />
         <activity android:name=".Report" />
         <activity android:name=".InformationActivity" />
+        <activity android:name=".Assets" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
