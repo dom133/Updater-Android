@@ -13,6 +13,7 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class VersionChecker extends Service {
@@ -23,6 +24,7 @@ public class VersionChecker extends Service {
     private Resources res;
     private SharedPreferences sPref;
     private NotificationTask nTask;
+    private Addons addons;
 
     @Override
     public void onCreate() {
@@ -35,6 +37,7 @@ public class VersionChecker extends Service {
         res = getResources();
         sPref = getSharedPreferences("Updater", Context.MODE_PRIVATE);
         nTask = new NotificationTask();
+        addons = new Addons(getApplication());
     }
 
     @Override
@@ -73,15 +76,19 @@ public class VersionChecker extends Service {
                     File file = new File(Environment.getExternalStorageDirectory().getPath() + "/Update.txt");
                     File update = new File(Environment.getExternalStorageDirectory().getPath() + "/Install.txt");
                     if (update.exists()) {
+                        ArrayList<String> zip = new ArrayList<>();
+                        zip.add("update.zip"); zip.add("update.zip.md5");
+                        zip.addAll(addons.getAddons(0));
                         if(sPref.getBoolean("isChange", false)) {sPref.edit().putBoolean("isChangelog", true).commit();}
+                        new File(Environment.getExternalStorageDirectory().getPath() + "/Updater").mkdir();
                         update.delete();
                         file.delete();
                         sPref.edit().putBoolean("isUpdate", false).commit();
-                        new File(Environment.getExternalStorageDirectory() + "/update.zip").delete();
-                        new File(Environment.getExternalStorageDirectory() + "/update.zip.md5").delete();
-                        new File(Environment.getExternalStorageDirectory().getPath() + "/supersu.zip").delete();
-                        new File(Environment.getExternalStorageDirectory().getPath() + "/xposed.zip").delete();
-                        new File(Environment.getExternalStorageDirectory().getPath() + "/gapps.zip").delete();
+                        new File(Environment.getExternalStorageDirectory() + "/Updater/update.zip").delete();
+                        new File(Environment.getExternalStorageDirectory() + "/Updater/update.zip.md5").delete();
+                        for(int i=0; i<=zip.size()-1; i++) {
+                            new File(Environment.getExternalStorageDirectory() + "/Updater/" + zip.get(i)).delete();
+                        }
                         sPref.edit().putBoolean("isDownError", false);
                     }
 

@@ -178,8 +178,8 @@ public class Assets extends AppCompatActivity {
                     TextView link = (TextView) addDialogView.findViewById(R.id.link_assets_txt);
                     String zip = name.getText().toString().replaceAll("\\s+", "")+".zip";
                     Log.i("INFO", "Name: "+name.getText().toString()+" Link: "+link.getText().toString()+" Zip: "+zip);
-                    if(Objects.equals(name.getText().toString(), "")) { Toast.makeText(getBaseContext(), res.getString(R.string.empty_name_assets_txt), Toast.LENGTH_SHORT).show(); name.setError(res.getString(R.string.empty_name_assets_txt));}
-                    else if(Objects.equals(link.getText().toString(), "")) { Toast.makeText(getBaseContext(), res.getString(R.string.empty_link_assets_txt), Toast.LENGTH_SHORT).show(); link.setError(res.getString(R.string.empty_link_assets_txt));}
+                    if(Objects.equals(name.getText().toString(), "")) { name.setError(res.getString(R.string.empty_name_assets_txt));}
+                    else if(Objects.equals(link.getText().toString(), "")) { link.setError(res.getString(R.string.empty_link_assets_txt));}
                     else {
                         active_addons_list.add(1);
                         type_list.add(type.getSelectedItemPosition());
@@ -266,7 +266,7 @@ public class Assets extends AppCompatActivity {
                     zip_list.set(itemID, zip);
                     list_adapter.notifyDataSetChanged();
                     type.setText(res.getStringArray(R.array.type_assets_array)[type_list.get(itemID)]);
-                } else {Toast.makeText(getBaseContext(), res.getString(R.string.empty_name_assets_txt), Toast.LENGTH_SHORT).show(); name.setError(res.getString(R.string.empty_name_assets_txt));}
+                } else {name.setError(res.getString(R.string.empty_name_assets_txt));}
             }
         });
 
@@ -293,7 +293,7 @@ public class Assets extends AppCompatActivity {
                     type_list.set(itemID, 1);
                     links_list.set(itemID, link.getText().toString());
                     type.setText(res.getStringArray(R.array.type_assets_array)[type_list.get(itemID)]);
-                } else {Toast.makeText(getBaseContext(), res.getString(R.string.empty_link_assets_txt), Toast.LENGTH_SHORT).show(); link.setError(res.getString(R.string.empty_link_assets_txt));}
+                } else {link.setError(res.getString(R.string.empty_link_assets_txt));}
             }
         });
     }

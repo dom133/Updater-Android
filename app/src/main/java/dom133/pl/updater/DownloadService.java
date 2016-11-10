@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Path;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.StrictMode;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Button;
 import java.io.BufferedInputStream;
@@ -18,6 +20,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
@@ -30,6 +33,7 @@ public class DownloadService extends Service {
     private Download download;
     private SharedPreferences sPref;
     private DownloadFile downloadFile;
+    private Addons addons;
     boolean isCancled = false;
 
     public DownloadService() {
@@ -46,6 +50,7 @@ public class DownloadService extends Service {
         res = getResources();
         download = new Download(getApplication());
         downloadFile = new DownloadFile();
+        addons = new Addons(getApplication());
     }
 
     @Override
@@ -62,6 +67,7 @@ public class DownloadService extends Service {
 
                 sPref.edit().putBoolean("isUpdate", true).commit();
                 stopService(new Intent(getApplicationContext(), VersionChecker.class));
+                downloadFile.execute();
 
                 return START_STICKY;
             } catch(Exception e) {Log.e("ERROR", e.getMessage());return START_STICKY;}
@@ -90,68 +96,27 @@ public class DownloadService extends Service {
         private volatile boolean running = false;
         int progress = 0;
         int downloaded = 0;
+        ArrayList<String> zip = new ArrayList<>();
+        ArrayList<String> links = new ArrayList<>();
 
         @Override
         protected String doInBackground(String... f_url) {
             sPref.edit().putBoolean("isUpdate", true).commit();
+            links.add(download.DownloadString(res.getString(R.string.download_url)+"-"+cm.getCMVersion()+".txt"));links.add(res.getString(R.string.md5_link)+"-"+cm.getCMVersion()+".zip.md5");
+            zip.add("update.zip"); zip.add("update.zip.md5");
+            zip.addAll(addons.getAddons(0));
+            links.addAll(addons.getAddons(1));
+
+            int count;
+            int files = 1;
+            int numbers = zip.size();
             while(!isCancelled()) {
                 running=true;
-                int count;
-                int files = 1;
-                int number = f_url.length;
-                int[] get = new int[10];
-                int[] url_i = new int[10];
-                Log.i("INFO", "Numbers: " + number);
                 try {
-                    switch (number) {
-                        case 4: {
-                            url_i[0] = 0;
-                            url_i[1] = 2;
-                            get[0] = 1;
-                            get[1] = 3;
-                            break;
-                        }
-                        case 6: {
-                            url_i[0] = 0;
-                            url_i[1] = 2;
-                            url_i[2] = 4;
-                            get[0] = 1;
-                            get[1] = 3;
-                            get[2] = 5;
-                            break;
-                        }
-                        case 8: {
-                            url_i[0] = 0;
-                            url_i[1] = 2;
-                            url_i[2] = 4;
-                            url_i[3] = 6;
-                            get[0] = 1;
-                            get[1] = 3;
-                            get[2] = 5;
-                            get[3] = 7;
-                            break;
-                        }
-                        case 10: {
-                            url_i[0] = 0;
-                            url_i[1] = 2;
-                            url_i[2] = 4;
-                            url_i[3] = 6;
-                            url_i[4] = 8;
-                            get[0] = 1;
-                            get[1] = 3;
-                            get[2] = 5;
-                            get[3] = 7;
-                            get[4] = 9;
-                            break;
-                        }
-                    }
-
                     while (!isCancelled()) {
                         notifications.sendNotificationDownload("Updater", "", 0, true, 0);
-                        File file = null;
-                        if(sPref.getInt("Memory", 0)==0) {file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + f_url[get[files - 1]]);}
-                        else {file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + f_url[get[files - 1]]);}
-
+                        new File(Environment.getExternalStorageDirectory().getPath() + "/Updater").mkdir();
+                        File file = new File(Environment.getExternalStorageDirectory().getPath() + "/Updater/" + zip.get(files-1));
                         if (file.exists()) {
                             Log.i("INFO", "File deleted");
                             file.delete();
@@ -159,14 +124,14 @@ public class DownloadService extends Service {
 
                         Log.i("INFO", "File: " + file.getPath());
 
-                        URL url = new URL(f_url[url_i[files - 1]]);
+                        URL url = new URL(links.get(files-1));
                         URLConnection connection = url.openConnection();
                         connection.connect();
                         int lenghtoffile = connection.getContentLength();
 
 
                         InputStream input = new BufferedInputStream(url.openStream(), 8192);
-                        OutputStream output = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + "/" + f_url[get[files - 1]]);
+                        OutputStream output = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + "/Updater/" + zip.get(files-1));
 
                         byte data[] = new byte[54 * 1024];
                         long total = 0;
@@ -182,18 +147,11 @@ public class DownloadService extends Service {
                         output.flush();
                         input.close();
                         output.close();
-                        if (number == 2) {
-                            if (files == 1) break;
-                        } else if (number == 4) {
-                            if (files == 2) break;
-                        } else if (number == 6) {
-                            if (files == 3) break;
-                        }
+
+                        if(files==numbers) {break;}
                         files++;
                     }
                     return "OK";
-
-
                 } catch (Exception e) {
                     Log.i("ERROR", e.getMessage());
                     sPref.edit().putBoolean("isDownError", true);

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.firebase.crash.FirebaseCrash;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class InstallService extends Service {
     public InstallService() {
@@ -27,12 +28,14 @@ public class InstallService extends Service {
 
     private SharedPreferences pref;
     private Notifications notifications;
+    private Addons addons;
 
     @Override
     public void onCreate() {
         super.onCreate();
         pref = getSharedPreferences("Updater", Context.MODE_PRIVATE);
         notifications = new Notifications(getApplication());
+        addons = new Addons(getApplication());
     }
 
     @Override
@@ -42,6 +45,10 @@ public class InstallService extends Service {
         notifications.sendNotificationDownload("Updater", "", 0, true, 1);
         File file = new File(Environment.getExternalStorageDirectory().getPath()+"/Update.txt");
         if(file.exists()) {Log.i("INFO", "File deleted"); file.delete();}
+
+        ArrayList<String> zip = new ArrayList<>();
+        zip.add("update.zip");
+        zip.addAll(addons.getAddons(0));
 
         try {
             File update = new File(Environment.getExternalStorageDirectory().getPath()+"/Install.txt");
@@ -54,21 +61,8 @@ public class InstallService extends Service {
             outputStream.writeBytes("echo 'boot-recovery ' > /cache/recovery/command\n");
             outputStream.flush();
 
-            outputStream.writeBytes("echo '--update_package=/sdcard/update.zip' >> /cache/recovery/command\n");
-            outputStream.flush();
-
-            if(pref.getBoolean("isSuperSU", false)) {
-                outputStream.writeBytes("echo '--update_package=/sdcard/supersu.zip' >> /cache/recovery/command\n");
-                outputStream.flush();
-            }
-
-            if(pref.getBoolean("isGapps", false)) {
-                outputStream.writeBytes("echo '--update_package=/sdcard/gapps.zip' >> /cache/recovery/command\n");
-                outputStream.flush();
-            }
-
-            if(pref.getBoolean("isXposed", false)) {
-                outputStream.writeBytes("echo '--update_package=/sdcard/xposed.zip' >> /cache/recovery/command\n");
+            for(int i=0; i<=zip.size()-1; i++) {
+                outputStream.writeBytes("echo '--update_package=/sdcard/Updater/"+zip.get(i)+"' >> /cache/recovery/command\n");
                 outputStream.flush();
             }
 

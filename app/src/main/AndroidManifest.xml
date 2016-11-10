@@ -57,7 +57,7 @@
             android:process=":Install_Service" />
 
         <activity android:name=".Settings" />
-        <activity android:name=".Report" />
+        <activity android:name=".Report" android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".InformationActivity" />
         <activity android:name=".Assets" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
