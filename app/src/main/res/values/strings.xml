@@ -46,4 +46,5 @@
     <string name="delete_txt">Usuń</string>
     <string name="delete_addon_txt">Poprawnie usunięto dodatek</string>
     <string name="clear_assest_txt">Poprawnie usunięto wszytskie dodatki</string>
+    <string name="error_add_assets_txt">Wystąpił błąd podczas dodawania dodatku</string>
 </resources>

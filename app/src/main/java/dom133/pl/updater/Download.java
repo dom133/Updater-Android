@@ -41,7 +41,7 @@ public class Download {
 				}
                 in.close();
             } catch (Exception e) {
-                Log.i("INFO", e.getMessage());
+                Log.i("ERROR", e.getMessage());
                 return null;
             }
         return null;

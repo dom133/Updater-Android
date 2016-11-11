@@ -45,14 +45,14 @@
 
             <TextView
                 android:text="@string/time_txt"
-                android:layout_width="235dp"
+                android:layout_width="wrap_content"
                 android:layout_height="43dp"
                 android:id="@+id/textView7"
                 tools:ignore="HardcodedText,NestedWeights"
                 android:textColor="#000000" />
 
             <Spinner
-                android:layout_width="match_parent"
+                android:layout_width="154dp"
                 android:layout_height="match_parent"
                 android:id="@+id/spinner_time" />
         </LinearLayout>

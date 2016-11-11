@@ -160,15 +160,17 @@ public class Assets extends AppCompatActivity {
                     if(Objects.equals(link, "false")){Toast.makeText(getBaseContext(), res.getString(R.string.null_assets_txt), Toast.LENGTH_LONG).show();}
                     else {
                         if(!CheckExist(name)) {
-                            active_addons_list.add(1);
-                            type_list.add(type.getSelectedItemPosition());
-                            addons_list.add(name);
-                            links_list.add(link);
-                            zip_list.add(zip);
-                            list_adapter.notifyDataSetChanged();
-                            addDialog.cancel();
-                            Toast.makeText(getBaseContext(), res.getString(R.string.succes_assets_txt), Toast.LENGTH_SHORT).show();
-                            Log.i("INFO", "Array: "+String.valueOf(addons_list));
+                            if(link!=null) {
+                                active_addons_list.add(1);
+                                type_list.add(type.getSelectedItemPosition());
+                                addons_list.add(name);
+                                links_list.add(link);
+                                zip_list.add(zip);
+                                list_adapter.notifyDataSetChanged();
+                                addDialog.cancel();
+                                Toast.makeText(getBaseContext(), res.getString(R.string.succes_assets_txt), Toast.LENGTH_SHORT).show();
+                                Log.i("INFO", "Array: " + String.valueOf(addons_list));
+                            } else {Toast.makeText(getBaseContext(), res.getString(R.string.error_add_assets_txt), Toast.LENGTH_SHORT).show();}
                         } else { Toast.makeText(getBaseContext(), res.getString(R.string.isset_addon_txt), Toast.LENGTH_SHORT).show(); }
                     }
                     addDialogView.findViewById(R.id.add_assets_button).setEnabled(true);

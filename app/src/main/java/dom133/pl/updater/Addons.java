@@ -3,6 +3,7 @@ package dom133.pl.updater;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -33,20 +34,22 @@ public class Addons {
 
         switch(type) {
             case 0: {
-                for(int i=0; i<=links.size()-1; i++) {
+                for(int i=0; i<=zip_list.size()-1; i++) {
                     if(Objects.equals(active_addons_list.get(i), 1)) {
                         zip.add(zip_list.get(i));
                     }
                 }
+                Log.i("INFO", "Zip size: "+zip.size());
                 return zip;
             }
 
             case 1: {
-                for(int i=0; i<=links.size()-1; i++) {
+                for(int i=0; i<=links_list.size()-1; i++) {
                     if(Objects.equals(active_addons_list.get(i), 1)) {
-                        links.add(zip_list.get(i));
+                        links.add(links_list.get(i));
                     }
                 }
+                Log.i("INFO", "Links size: "+links.size());
                 return links;
             }
         }

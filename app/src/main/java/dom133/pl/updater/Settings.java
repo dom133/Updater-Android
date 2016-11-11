@@ -44,7 +44,7 @@ public class Settings extends AppCompatActivity {
         Switch changelog = (Switch) findViewById(R.id.changelog);
         Spinner time = (Spinner) findViewById(R.id.spinner_time);
 
-        ArrayAdapter<CharSequence> time_adapter = ArrayAdapter.createFromResource(this, R.array.time_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> time_adapter = ArrayAdapter.createFromResource(getBaseContext(), R.array.time_array, android.R.layout.simple_spinner_item);
         time_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         time.setAdapter(time_adapter);
 

@@ -78,12 +78,13 @@ public class DownloadService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.i("INFO", "Download service stopped");
+        downloadFile.cancel(true);
         File file = new File(Environment.getExternalStorageDirectory().getPath()+"/Update.txt");
         if(file.exists()) {Log.i("INFO", "File deleted"); file.delete();}
-        if(isCancled) {notifications.sendNotification("Updater", res.getString(R.string.cancle_message), 0);sPref.edit().putBoolean("isDownError", true);}
+        if(isCancled) {notifications.sendNotification("Updater", res.getString(R.string.cancle_message), 0);sPref.edit().putBoolean("isDownError", true).commit();}
         sPref.edit().putBoolean("isUpdate", false).commit();
-        downloadFile.cancel(true);
         sPref = null;
+        stopService(new Intent(getApplicationContext(), VersionChecker.class));
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
@@ -110,6 +111,7 @@ public class DownloadService extends Service {
             int count;
             int files = 1;
             int numbers = zip.size();
+            Log.i("INFO","Numbers: "+numbers+" ArrayZip: "+String.valueOf(zip)+" ArrayLinks: "+String.valueOf(links));
             while(!isCancelled()) {
                 running=true;
                 try {
@@ -153,10 +155,9 @@ public class DownloadService extends Service {
                     }
                     return "OK";
                 } catch (Exception e) {
-                    Log.i("ERROR", e.getMessage());
-                    sPref.edit().putBoolean("isDownError", true);
+                    Log.i("ERROR", " "+e.getMessage());
+                    sPref.edit().putBoolean("isDownError", true).commit(); sPref.edit().putBoolean("isUpdate", false).commit();
                     if(!isCancled)notifications.sendNotification("Updater", res.getString(R.string.download_incomplete), 0);
-                    stopService(new Intent(getApplicationContext(), VersionChecker.class));
                     stopSelf();
                     return null;
                 }
@@ -176,14 +177,15 @@ public class DownloadService extends Service {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if(s!=null){notifications.sendNotification("Updater", res.getString(R.string.download_complete), 1); sPref.edit().putBoolean("isDownError", true);}
-            else {sPref.edit().putBoolean("isFinishedUpdate", true).commit();}
+            if(s!=null){notifications.sendNotification("Updater", res.getString(R.string.download_complete), 1); sPref.edit().putBoolean("isFinishedUpdate", true).commit();}
+            else {sPref.edit().putBoolean("isDownError", true).commit();}
             stopSelf();
         }
 
         @Override
         protected void onCancelled() {
             running = false;
+            isCancled=true;
             Log.i("INFO", "AsyncTask canclled");
         }
     }
