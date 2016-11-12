@@ -118,6 +118,9 @@ public class Main extends AppCompatActivity {
             }
         });
 
+        //Hide Assets Button
+        if(Objects.equals(download.DownloadString(res.getString(R.string.version_url) + "-" + cm.getCMVersion() + ".txt"), "false")){findViewById(R.id.button2).setEnabled(false);}
+
         //Show Assets Menu
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -27,8 +27,9 @@ import static dom133.pl.updater.R.id.action_settings;
 
 public class Settings extends AppCompatActivity {
 
-    SharedPreferences sPref;
-    Resources res;
+    private SharedPreferences sPref;
+    private Resources res;
+    private boolean isFirst=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,8 @@ public class Settings extends AppCompatActivity {
                 else if(i==4) {sPref.edit().putInt("Time", (1000*60)*60).commit();}
                 else if(i==5) {sPref.edit().putInt("Time", (1000*60)*120).commit();}
                 else if(i==6) {sPref.edit().putInt("Time", (1000*60)*240).commit();}
-                stopService(new Intent(getApplicationContext(), VersionChecker.class));
+                if(!isFirst)stopService(new Intent(getApplicationContext(), VersionChecker.class));
+                else {isFirst=false;}
             }
 
             @Override
