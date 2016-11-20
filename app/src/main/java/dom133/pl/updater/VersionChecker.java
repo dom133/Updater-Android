@@ -105,7 +105,9 @@ public class VersionChecker extends Service {
                                 if (!download.DownloadString(res.getString(R.string.version_url) + "-" + cm.getCMVersion() + ".txt").equals(cm.getProp("ro.cm.version")) && download.DownloadString(res.getString(R.string.version_url) + "-" + cm.getCMVersion() + ".txt") != null && !Objects.equals(download.DownloadString(res.getString(R.string.version_url) + "-" + cm.getCMVersion() + ".txt"), "false")) {
                                     notifications.sendNotification("Updater", res.getString(R.string.version_message), 0);
                                     Log.i("INFO", "ROM " + String.valueOf(sPref.getInt("Time", (1000 * 60) * 30)));
+                                    sPref.edit().putBoolean("isDownError", true).commit();
                                     Thread.sleep(sPref.getInt("Time", (1000 * 60) * 30));
+                                    sPref.edit().putBoolean("isDownError", false).commit();
                                 } else {
                                     Log.i("INFO", "Sleep: " + String.valueOf(sPref.getInt("Time", (1000 * 60))));
                                     Thread.sleep(sPref.getInt("Time", (1000 * 60)));
