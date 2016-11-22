@@ -112,9 +112,9 @@ public class VersionChecker extends Service {
                                     Log.i("INFO", "Sleep: " + String.valueOf(sPref.getInt("Time", (1000 * 60))));
                                     Thread.sleep(sPref.getInt("Time", (1000 * 60)));
                                 }
-                            } else {Log.i("INFO", "isFinishedUpdate"); Thread.sleep(1800000); sPref.edit().putBoolean("isFinishedUpdate", false).commit();}
-                        } else {Log.i("INFO", "isUpdate"); Thread.sleep(60000);}
-                    } else {Log.i("INFO", "isError");Thread.sleep(1800000); sPref.edit().putBoolean("isDownError", false).commit();}
+                            } else {Log.i("INFO", "isFinishedUpdate"); Thread.sleep(sPref.getInt("Time", (1000 * 60))); sPref.edit().putBoolean("isFinishedUpdate", false).commit();}
+                        } else {Log.i("INFO", "isUpdate"); Thread.sleep(sPref.getInt("Time", (1000 * 60)));}
+                    } else {Log.i("INFO", "isError");Thread.sleep(sPref.getInt("Time", (1000 * 60))); sPref.edit().putBoolean("isDownError", false).commit();}
                 } catch (Exception e) {Log.e("ERROR", e.getMessage());return null;}
             }
             return null;
