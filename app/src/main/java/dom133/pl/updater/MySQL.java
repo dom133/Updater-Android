@@ -18,7 +18,7 @@ public class MySQL {
     JSONParser jsonParser = new JSONParser();
 
 
-    public String add(String type, String nick, String email, String title, String contents) {
+    public String add(String type, String nick, String email, String title, String contents, String os) {
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("type", type));
@@ -28,18 +28,15 @@ public class MySQL {
         params.add(new BasicNameValuePair("title", title));
         params.add(new BasicNameValuePair("contents", contents));
         params.add(new BasicNameValuePair("version", BuildConfig.VERSION_NAME));
+        params.add(new BasicNameValuePair("os", os.toUpperCase()));
 
         JSONObject json = jsonParser.makeHttpRequest(api, "POST", params);
         try {
             Log.i("INFO", "Json: "+json.toString());
-            if(json.getInt("success")==1) {
-                return json.getString("message");
-            } else {
-                return json.getString("message");
-            }
+            return json.getString("success");
         } catch(Exception e) {
             Log.e("INFO", e.getMessage());
-            return "Wystąpił nie oczekiwany blad!!!";
+            return "0";
         }
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string-array name="type_array">
-      <item>Zgłoś błąd</item>
-      <item>Zgłoś propozycję</item>
-  </string-array>
+    <string-array name="type_array">
+        <item>Zgłoś błąd</item>
+        <item>Zgłoś propozycję</item>
+    </string-array>
 
     <string-array name="time_array">
         <item>1 min</item>
@@ -15,8 +15,27 @@
         <item>4 godz</item>
     </string-array>
 
-    <string-array name="memory_array">
-        <item>Pamięc wewnętrzna</item>
-        <item>Karta SD</item>
+    <string-array name="type_assets_array">
+        <item>Orginalny</item>
+        <item>Własny</item>
+    </string-array>
+
+    <string-array name="addons_array">
+        <item>SuperSU</item>
+        <item>Xposed</item>
+        <item>Gapps</item>
+        <item>C-apps</item>
+    </string-array>
+
+    <string-array name="links_addons_array">
+        <item>http://app-updater.pl/updates/txt/download_supersu</item>
+        <item>http://app-updater.pl/updates/txt/download_xposed</item>
+        <item>http://app-updater.pl/updates/txt/download_gapps</item>
+        <item>http://app-updater.pl/updates/txt/download_c-apps</item>
+    </string-array>
+
+    <string-array name="action_edit_assets_button">
+        <item>Aktywuj</item>
+        <item>Dezaktywuj</item>
     </string-array>
 </resources>
