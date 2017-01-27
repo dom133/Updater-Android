@@ -223,6 +223,23 @@ public class Assets extends AppCompatActivity {
             }
         });
 
+        editDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                //TextView
+                TextView type = (TextView) editDialogView.findViewById(R.id.type_txt);
+                TextView name = (TextView) editDialogView.findViewById(R.id.name_txt);
+                TextView link = (TextView) editDialogView.findViewById(R.id.link_txt);
+                TextView name_edit = (TextView) editDialogView.findViewById(R.id.name_txt);
+                TextView link_edit = (TextView) editDialogView.findViewById(R.id.link_txt);
+                editDialogView.findViewById(R.id.name_layout_edit).setVisibility(View.VISIBLE);
+                editDialogView.findViewById(R.id.name_layout_save).setVisibility(View.GONE);
+                editDialogView.findViewById(R.id.name_layout_edit).setVisibility(View.VISIBLE);
+                editDialogView.findViewById(R.id.name_layout_save).setVisibility(View.GONE);
+                type.setText(""); name.setText(""); link.setText(""); name_edit.setText(""); link_edit.setText("");
+            }
+        });
+
         action_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
