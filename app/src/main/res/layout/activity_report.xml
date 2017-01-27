@@ -1,79 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="dom133.pl.updater.Report">
+    tools:context="dom133.pl.updater.Report"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/type_txt"
-        android:id="@+id/type"
-        android:textColor="#000000"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/toolbar3" />
 
-    <Spinner
-        android:layout_width="138dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/type_spinner"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/type" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/nick_txt"
-        android:hint="@string/nick_text"
-        android:layout_below="@+id/type_spinner"
-        android:layout_alignEnd="@+id/type_spinner"
-        android:layout_alignParentStart="true"
-        android:singleLine="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_txt"
+            android:id="@+id/type"
+            android:textColor="#000000"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/email_txt"
-        android:layout_below="@+id/nick_txt"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/nick_txt"
-        android:hint="Email:"
-        android:singleLine="true" />
+        <Spinner
+            android:layout_width="138dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/type_spinner"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/type" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/title_txt"
-        android:layout_below="@+id/email_txt"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/email_txt"
-        android:singleLine="true"
-        android:hint="@string/title_text" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nick_txt"
+            android:hint="@string/nick_text"
+            android:layout_below="@+id/type_spinner"
+            android:layout_alignEnd="@+id/type_spinner"
+            android:layout_alignParentStart="true"
+            android:singleLine="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/contents_txt"
-        android:layout_below="@+id/title_txt"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/title_txt"
-        android:hint="@string/contents_text" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/email_txt"
+            android:layout_below="@+id/nick_txt"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@+id/nick_txt"
+            android:hint="Email:"
+            android:singleLine="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/report_button"
-        android:layout_below="@+id/contents_txt"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_txt"
+            android:layout_below="@+id/email_txt"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@+id/email_txt"
+            android:singleLine="true"
+            android:hint="@string/title_text" />
 
-</RelativeLayout>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/contents_txt"
+            android:layout_below="@+id/title_txt"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@+id/title_txt"
+            android:hint="@string/contents_text" />
+
+    </RelativeLayout>
+
+</LinearLayout>

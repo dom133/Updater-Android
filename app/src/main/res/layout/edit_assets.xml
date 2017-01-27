@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/dialog_bg"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="@string/addon_type_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView9"
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/type_txt"
+            android:layout_weight="1"
+            android:textColor="@color/colorAccent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/name_layout_edit">
+
+        <TextView
+            android:text="@string/name_assets_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView12"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/name_txt"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_weight="1"
+            android:textColor="@color/colorAccent" />
+
+        <Button
+            android:text="@string/edit_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_name_assets_button" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/name_layout_save"
+        android:visibility="gone">
+
+        <TextView
+            android:text="@string/name_assets_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView13"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/colorAccent" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/name_edit_txt"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="@string/save_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/save_name_assets_button" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/link_layout_edit">
+
+        <TextView
+            android:text="@string/link_assets_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView15"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/link_txt"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/colorAccent" />
+
+        <Button
+            android:text="@string/edit_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_link_assets_button" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/link_layout_save"
+        android:weightSum="1"
+        android:visibility="gone">
+
+        <TextView
+            android:text="@string/link_assets_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView16"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/colorAccent" />
+
+        <EditText
+            android:layout_width="246dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/link_edit_txt"
+            android:layout_weight="0.97" />
+
+        <Button
+            android:text="@string/save_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/save_link_assets_button" />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/action_button" />
+
+    <Button
+        android:text="@string/delete_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/delete_button" />
+
+</LinearLayout>

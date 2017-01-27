@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.firebase.crash.FirebaseCrash;
@@ -12,6 +13,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Download {
@@ -38,34 +41,24 @@ public class Download {
 				}
                 in.close();
             } catch (Exception e) {
-                Log.i("INFO", e.getMessage());
+                Log.i("ERROR", e.getMessage());
                 return null;
             }
         return null;
     }
 
-    public String getProp(String name) {
-
+    @Nullable
+    public static ArrayList<String> getChangelog(String link) {
         try {
-            Process process = Runtime.getRuntime().exec("getprop "+name);
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-            int read;
-            char[] buffer = new char[4096];
-            StringBuffer output = new StringBuffer();
-            while ((read = reader.read(buffer)) > 0) {
-                output.append(buffer, 0, read);
+            ArrayList<String> changes = new ArrayList<>();
+            URL url2 = new URL(link);
+            BufferedReader br = new BufferedReader(new InputStreamReader(url2.openStream()));
+            String line;
+            while ((line = br.readLine()) != null) {
+                changes.add(line);
             }
-            reader.close();
-            process.waitFor();
+            return changes;
 
-            String out = output.toString();
-            out = out.replaceAll("\\s+","");
-            return out;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        } catch (Exception e) {Log.e("ERROR", e.getMessage()); return null;}
     }
 }

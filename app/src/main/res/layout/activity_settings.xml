@@ -41,61 +41,27 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.13">
-
-            <TextView
-                android:text="@string/time_actu_txt"
-                android:layout_width="164dp"
-                android:layout_height="match_parent"
-                android:id="@+id/textView6"
-                tools:ignore="NestedWeights"
-                android:textColor="#000000" />
-
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/spinner_time" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.12">
+            android:layout_height="41dp">
 
             <TextView
                 android:text="@string/time_txt"
-                android:layout_width="166dp"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="43dp"
                 android:id="@+id/textView7"
                 tools:ignore="HardcodedText,NestedWeights"
                 android:textColor="#000000" />
 
             <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/spinner_actu" />
+                android:layout_width="154dp"
+                android:layout_height="match_parent"
+                android:id="@+id/spinner_time" />
         </LinearLayout>
 
         <Switch
+            android:text="@string/changelog_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/supersu_text"
-            android:id="@+id/supersu" />
-
-        <Switch
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/xposed_text"
-            android:id="@+id/xposed" />
-
-        <Switch
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/gapps_text"
-            android:id="@+id/gapps" />
+            android:id="@+id/changelog" />
 
     </LinearLayout>
 
