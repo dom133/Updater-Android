@@ -12,70 +12,44 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
+import android.widget.Toast;
 
 import java.io.File;
 
 public class Notifications {
-    Application app;
-    Resources res;
 
-    public Notifications(Application app)
-    {
-        this.app = app;
-        res = app.getResources();
-    }
+    //Variables
+    private Application app;
+    private Resources res;
 
-    public void sendNotification(String title, String txt, int check)
-    {
+    public Notifications(Application app) {this.app = app;res = app.getResources();}
+
+    public void sendNotification(String title, String txt, int check) {
         Notification notification;
 
         if(check == 0) {
           Intent intent = new Intent(app, DownloadService.class);
           PendingIntent pIntent = PendingIntent.getService(app, 0, intent, 0);
-
             notification = new NotificationCompat.Builder(app)
                     .setSmallIcon(R.mipmap.ic_updater)
                     .setPriority(2)
                     .setContentTitle(title)
                     .setContentText(txt)
-                    .addAction(R.drawable.ic_download_button, "Pobierz", pIntent)
-                    .extend(new NotificationCompat.WearableExtender()
-                            .setHintShowBackgroundOnly(true))
+                    .addAction(R.drawable.ic_download_button, res.getString(R.string.download_button), pIntent)
                     .setPriority(2)
                     .setVibrate(new long[] {100, 400})
                     .build();
         } else if(check == 1) {
             Intent intent = new Intent(app, InstallService.class);
             PendingIntent pIntent = PendingIntent.getService(app, 0, intent, 0);
-
             notification = new NotificationCompat.Builder(app)
                     .setSmallIcon(R.mipmap.ic_updater)
                     .setPriority(2)
                     .setContentTitle(title)
                     .setContentText(txt)
-                    .extend(new NotificationCompat.WearableExtender()
-                            .setHintShowBackgroundOnly(true))
                     .setPriority(2)
                     .addAction(R.drawable.ic_install, res.getString(R.string.install_button), pIntent)
                     .setVibrate(new long[]{100, 400})
-                    .build();
-        } else if(check==3) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory()+"/"+Environment.DIRECTORY_DOWNLOADS+"/update.apk")), "application/vnd.android.package-archive");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent pIntent = PendingIntent.getActivity(app, 0, intent, 0);
-
-            notification = new NotificationCompat.Builder(app)
-                    .setSmallIcon(R.mipmap.ic_updater)
-                    .setPriority(2)
-                    .setContentTitle(title)
-                    .setContentText(txt)
-                    .addAction(R.drawable.ic_install, res.getString(R.string.install_button), pIntent)
-                    .extend(new NotificationCompat.WearableExtender()
-                            .setHintShowBackgroundOnly(true))
-                    .setPriority(2)
-                    .setVibrate(new long[] {100, 400})
-                    .setAutoCancel(true)
                     .build();
         } else {
             notification = new NotificationCompat.Builder(app)
@@ -83,8 +57,6 @@ public class Notifications {
                     .setPriority(2)
                     .setContentTitle(title)
                     .setContentText(txt)
-                    .extend(new NotificationCompat.WearableExtender()
-                            .setHintShowBackgroundOnly(true))
                     .setPriority(2)
                     .setVibrate(new long[] {100, 400})
                     .build();
@@ -94,8 +66,7 @@ public class Notifications {
         notificationManager.notify(notificationId, notification);
     }
 
-    public void sendNotificationDownload(String title, String txt, int value, boolean progress, int type)
-    {
+    public void sendNotificationDownload(String title, String txt, int value, boolean progress, int type) {
         if(type == 0) {
             Intent intent = new Intent(app, DownloadService.class);
             intent.setAction("ACTION_STOP_SERVICE");
@@ -106,11 +77,22 @@ public class Notifications {
                     .setPriority(2)
                     .setContentTitle(title)
                     .setContentText(txt)
-                    .extend(new NotificationCompat.WearableExtender()
-                            .setHintShowBackgroundOnly(true))
                     .setPriority(2)
                     .setProgress(100, value, progress)
                     .addAction(R.drawable.ic_cancle, res.getString(R.string.cancle_button), pIntent)
+                    .build();
+            notification.flags |= Notification.FLAG_NO_CLEAR;
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(app);
+            int notificationId = 1;
+            notificationManager.notify(notificationId, notification);
+        } else if(type == 1) {
+            Notification notification = new NotificationCompat.Builder(app)
+                    .setSmallIcon(R.mipmap.ic_updater)
+                    .setPriority(2)
+                    .setContentTitle(title)
+                    .setContentText(txt)
+                    .setPriority(2)
+                    .setProgress(100, value, progress)
                     .build();
             notification.flags |= Notification.FLAG_NO_CLEAR;
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(app);
@@ -121,5 +103,3 @@ public class Notifications {
 
 
 }
-
-

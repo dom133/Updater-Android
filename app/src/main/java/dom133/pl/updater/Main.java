@@ -2,8 +2,10 @@ package dom133.pl.updater;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -15,17 +17,24 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Main extends AppCompatActivity {
 
     private Resources res;
-    private String update = null;
+    private SharedPreferences sPref;
+    private Cm cm = new Cm();
+    private boolean isUpdate=false;
     private static String TAG = "Permission";
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -37,6 +46,8 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sPref = getSharedPreferences("Updater", Context.MODE_PRIVATE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,34 +61,76 @@ public class Main extends AppCompatActivity {
 
         final Download download = new Download(getApplication());
         final Button button = (Button) findViewById(R.id.button);
-        final Button button2 = (Button) findViewById(R.id.button2);
-
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startService(new Intent(getApplicationContext(), DownloadService.class));
-                Toast.makeText(getApplication(), "Pobieranie rozpoczęte!!!", Toast.LENGTH_SHORT).show();
-                button2.setEnabled(false);
-            }
-        });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("INFO", "String: " + download.getProp("ro.cm.version") + " DownloadString: " + download.DownloadString(res.getString(R.string.version_url))+" True: "+Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url))));
-                if (Objects.equals(download.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url)))) {
-                    Toast.makeText(getApplication(), "Nie znaleziono nowej wersji!!!", Toast.LENGTH_SHORT).show();
-                } else if (download.DownloadString(res.getString(R.string.version_url)) == null) {
-                    Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();
+                if(!isUpdate) {
+                    Log.i("INFO", "CM: "+cm.getCMVersion()+" String: " + cm.getProp("ro.cm.version") + " DownloadString: " + download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt") + " True: " + Objects.equals(cm.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt")));
+                    if (Objects.equals(cm.getProp("ro.cm.version"), download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt"))) {
+                        Toast.makeText(getApplication(), "Nie znaleziono nowej wersji!!!", Toast.LENGTH_SHORT).show();
+                    } else if (download.DownloadString(res.getString(R.string.version_url)+"-"+cm.getCMVersion()+".txt") == null) {
+                        Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();
+                    } else if(Objects.equals(download.DownloadString(res.getString(R.string.version_url) + "-" + cm.getCMVersion() + ".txt"), "false")) {
+                        Toast.makeText(getApplication(), "Dla tej wersji systemu aktualizacja jest aktualnie wyłączona", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplication(), res.getString(R.string.version_message), Toast.LENGTH_SHORT).show();
+                        button.setText("Pobierz");
+                        isUpdate = true;
+                    }
                 } else {
-                    Toast.makeText(getApplication(), res.getString(R.string.version_message), Toast.LENGTH_SHORT).show();
-                    button2.setVisibility(View.VISIBLE);
-                    button.setVisibility(View.GONE);
+                    startService(new Intent(getApplicationContext(), DownloadService.class));
+                    Toast.makeText(getApplication(), "Pobieranie rozpoczęte!!!", Toast.LENGTH_SHORT).show();
+                    button.setEnabled(false);
                 }
             }
         });
 
+
+        //Changelog Dialog
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View changelogDialogView = factory.inflate(R.layout.changelog_dialog, null);
+        final AlertDialog changelogDialog = new AlertDialog.Builder(this).create();
+        changelogDialog.setView(changelogDialogView);
+        changelogDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                ListView changes = (ListView) changelogDialogView.findViewById(R.id.changelog_list);
+                ArrayList<String> changes_list = Download.getChangelog("http://app-updater.pl/updates/txt/changelog-"+cm.getCMVersion()+".txt");
+                ArrayAdapter<String> changes_adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, changes_list);
+                changes.setAdapter(changes_adapter);
+            }
+        });
+
+        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Objects.equals(download.DownloadString(res.getString(R.string.version_url) + "-" + cm.getCMVersion() + ".txt"), "false")) { Toast.makeText(getBaseContext(), "Changelog dla tej wersji systemu jest aktualnie wyłączony", Toast.LENGTH_SHORT).show();}
+                else if(Download.getChangelog("http://app-updater.pl/updates/txt/changelog-"+cm.getCMVersion()+".txt")!=null) {changelogDialog.show();}
+                else {Toast.makeText(getApplication(), "Brak połączenia z internetem!!!", Toast.LENGTH_SHORT).show();}
+            }
+        });
+
+        changelogDialogView.findViewById(R.id.close_changelog_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changelogDialog.cancel();
+            }
+        });
+
+        //Hide Assets Button
+        if(Objects.equals(download.DownloadString(res.getString(R.string.version_url) + "-" + cm.getCMVersion() + ".txt"), "false")){findViewById(R.id.button2).setEnabled(false);}
+
+        //Show Assets Menu
+        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {startActivity(new Intent(getApplication(), Assets.class));}
+        });
+
         startService(new Intent(this, VersionChecker.class));
+
+        //Show Changelog
+        if(sPref.getBoolean("isChangelog", false)) {if(Download.getChangelog("http://app-updater.pl/updates/txt/changelog-"+cm.getCMVersion()+".txt")!=null) {changelogDialog.show(); sPref.edit().putBoolean("isChangelog", false).commit();}} //Show changelog
     }
 
 
